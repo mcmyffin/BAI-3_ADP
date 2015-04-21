@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<!-- saved from url=(0082)https://pub.informatik.haw-hamburg.de/home/pub/prof/kleine_martin/ad15ss/ad-1.html -->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+        <title>L&ouml;sungsblatt 1</title>
+
+        <!-- morris graph lib -->
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+
+        <!--<script src="Loesungsblatt_1_files/jquery.min.js"></script>-->
+        <!--<script src="Loesungsblatt_1_files/raphael-min.js"></script>-->
+        <!--<script src="Loesungsblatt_1_files/morris.min.js"></script>-->
+
+        <!-- LaTeX-style equations -->
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+        </script>
+
+        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+
+        <!-- tests -->
+        <script>
+          function assert(value, desc) {
+            var li = document.createElement("li");
+            li.style.color = value ? "green" : "red";
+            li.appendChild(document.createTextNode(desc));
+            var list = document.getElementById("results");
+            if (!list) {
+              list = document.createElement("div");
+              document.body.appendChild(list);
+            }
+            list.appendChild(li);
+          }
+        </script>
+    </head>
+
+    <body>
+        <!-- Überschrift -->
+        <h1 id="title">L&ouml;sungsblatt 1</h1>
+
+        <h2>
+            Team ???
+        </h2>
+        <ul>
+            <li>
+                Dimitri Meier
+            </li>
+            <li>
+                Saeed Shanidar
+            </li>
+        </ul>
+
+        <!-- Aufgabe 1 ----------------------------------------------------------------------------------------------->
+        <h2>
+            Aufgabe 1.1
+        </h2>
+
+        <!-- Aufgabenstellung -->
+        <p>
+            Gegeben seien ein Startpunkt $x \in \mathbb{N}$ und ein Zielpunkt $y \in \mathbb{N}$ auf einer Geraden,
+            sowie ein Schrittmaß $d \in \mathbb{N}$. Gesucht ist die Anzahl der Schritte
+            $steps(x, y, d) \in \mathbb{N}$, die benötigt werden, um einen Punkt zu erreichen, dessen Wert
+            größer als $y$ ist.
+        </p>
+
+        <p>
+            Beispiel: Bei der Eingabe $x = 15$, $y = 80$, $d = 30$ sind drei Schritte nötig.
+        </p>
+
+        <ol>
+            <li>
+                In Abhägigkeit von welchem Wert bestimmen Sie Laufzeit und Speicherplatzbedarf?
+            </li>
+            <li>
+                Welchen Zeit- und welchen Platzaufwand hat eine naive Implementierung?
+            </li>
+            <li>
+                Implementieren Sie die Methode $steps(x,y,d)$, welche die gesuchte Anzahl der Schritte in Zeitaufwand $O(1)$ und  Platzaufwand $O(1)$ berechnet.
+            </li>
+        </ol>
+
+        <h2>
+            Antwort 1 (In Abhägigkeit vom Wert: Laufzeit und Speicherplatzbedarf?)
+        </h2>
+        <ol>
+            <li>
+                <p>
+                    <b>Laufzeit & Zeitaufwand</b>
+                    <br>
+                    <i>Worst Case</i> bei ($d$ = $1$) -> $O(n)$
+                    <br>
+                    <i>Best Case</i> bei ($d$ > $y$) -> $O(1)$
+                </p>
+            </li>
+        </ol>
+        <h2>
+            Antwort 2 (Eine naive Implementierung: Zeit- und Platzaufwand ?)
+        </h2>
+        <ol>
+            <li>
+                <p>
+                    <b>Laufzeit & Zeitaufwand</b>
+                    <br>
+                    <i>Worst Case</i> bei ($d$ = $1$) -> $O(n)$
+                    <br>
+                    <i>Best Case</i> bei ($d$ > $y$) -> $O(1)$
+                </p>
+            </li>
+        </ol>
+
+        <h3>
+            Implementierung (Antwort 3)
+        </h3>
+
+        <!-- In diesem Element wird der Inhalt des scripts mit der ID ad-1-1-results angezeigt -->
+        <pre id="ad-1-1-source"></pre>
+        <h3>
+            Testergebnisse
+        </h3>
+        <div id="ad-1-1-results"></div>
+        <!-- Code und Tests hier hin -->
+        <script id="ad-1-1-code">
+
+            var ad_1_1_data = [];
+
+             // Code
+            Steps = function() {
+                this.result = 0;
+                this.unit_of_time = 0;
+
+                this.X;
+                this.Y;
+                this.D;
+
+                this.calc = function(x,y,d){
+
+                    this.X = x;
+                    this.Y = y;
+                    this.D = d;
+
+                    if(x <= y)
+                    {
+                        this.unit_of_time++;
+                        this.result = (y-x+1)/d;
+                    }
+                }
+             }
+
+             // Experiments
+             for(i = 1; i <= 50; i ++) {
+
+                 var x = Math.floor(Math.random() * 100) + 1;
+                 var y = x + Math.floor(Math.random() * 100) + 1;
+                 var d = Math.floor(Math.random() * 100) + 1
+
+                 var steps = new Steps();
+                 steps.calc(x,y,d);
+
+                ad_1_1_data.push({
+                    xK : i,
+                    yK : steps.unit_of_time,
+                    resultObj: steps.result
+
+                });
+             }
+
+              // Tests
+              assert(ad_1_1_data.length === 50, "experiments have collected data ("+ad_1_1_data.length+")");
+
+//              for(i = 0; i < ad_1_1_data.length; i++){
+//                  var o = ad_1_1_data[i]['resultObj'];
+//                  assert(((o.result * o.D) + o.X > o.Y), "Step calculated correctly ("+i+")");
+//              }
+
+        </script>
+
+        <!-- dieser Code zeigt die Implementierung und die Tests an -->
+        <script>
+            $('pre#ad-1-1-source').html($('#ad-1-1-code').html())
+        </script>
+
+        <h3>
+            Experimente
+        </h3>
+
+        <div id="ad-1-1-experiments" style="height: 250px;"></div>
+        <script>
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'ad-1-1-experiments',
+                // do values relate to dates (time)?
+                parseTime: false,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: ad_1_1_data,
+                // The name of the data record attribute that contains x-values.
+                xkey: 'xK',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['yK'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['Steps']
+            });
+        </script>
+
+        <!-- Aufgabe 1.2 ---------------------------------------------------------------------------------------------->
+        <h2>
+            Aufgabe 1.2 Fibonacci-Zahlen
+        </h2>
+
+        <!-- Aufgabestellung -->
+
+            <ol>
+                <li>
+                    Implementieren Sie $fib$ direkt (also naiv).
+                </li>
+                <li>
+                    Bestimmen Sie experimentell den Zeitaufwand von $fib$ und stellen Sie das Ergebnis gra-<br>
+                    phisch dar. Geben Sie die gemessene Laufzeitklasse möglichst präzise in der O-Notation<br>
+                    an.
+                </li>
+                <li>
+                    Die Fibonacci Zahlen können auch schneller berechnet werden. Schreiben Sie jetzt zwei<br>
+                    verbesserte Funktionen $fib2$ und $fib3$, die rekursiv mit linearem Zeitaufwand ablaufen<br>
+                    $(O(n))$.<br><br>
+                    $fib2$ soll memoization verwenden.<br>
+                    $fib3$ soll ohne memoization auskommen.
+                </li>
+                <li>
+                    Bestimmen Sie experimentell den jeweiligen Zeitaufwand von $fib2$ und $fib3$ und stellen<br>
+                    Sie die Ergebnisse graphisch dar.
+                </li>
+                <li>
+                    Erläutern Sie, ob und wie sich Ihre Implementierung $fib2$ und $fib3$ im Platzaufwand<br>
+                    unterscheiden.
+                </li>
+                <li>
+                    Implementieren Sie $fib4$ als iterative Version von $fib3$.
+                </li>
+            </ol>
+
+        <h3>
+            Implementierung (Antwort 1,2)
+        </h3>
+
+        <!-- In diesem Element wird der Inhalt des scripts mit der ID ad-1-2-code angezeigt -->
+        <pre id="ad-1-2-source"></pre>
+        <h3>
+            Testergebnisse
+        </h3>
+        <div id="ad-1-2-results"></div>
+
+        <!-- Code und Tests hier hin -->
+        <script id="ad-1-2-code">
+            var ad_1_2_data = [];
+
+            // Code
+            var Fib1 = function(){
+                this.unit_of_time = 0;
+
+                this.fib = function (n) {
+                    this.unit_of_time++;
+                    return (n <= 1 ? 1 : this.fib(n-1) + this.fib(n-2));
+                }
+
+            }
+
+
+            // Experiments
+            for(i = 0; i < 30; i ++) {
+                var fib1 = new Fib1();
+                fib1.fib(i);
+
+                ad_1_2_data.push({
+                    xK : i,
+                    yK: fib1.unit_of_time
+                });
+            }
+
+          // Tests
+          assert(ad_1_2_data.length === 30, "experiments have collected data");
+          assert((new Fib1()).fib(0) === 1,"'$fib(0)$' working correctly");
+          assert((new Fib1()).fib(1) === 1,"'$fib(1)$' working correctly");
+          assert((new Fib1()).fib(2) === 2,"'$fib(2)$' working correctly");
+          assert((new Fib1()).fib(3) === 3,"'$fib(3)$' working correctly");
+          assert((new Fib1()).fib(4) === 5,"'$fib(4)$' working correctly");
+          assert((new Fib1()).fib(5) === 8,"'$fib(5)$' working correctly");
+        </script>
+
+        <!-- dieser Code zeigt die Implementierung und die Tests an -->
+        <script>
+            $('pre#ad-1-2-source').html($('#ad-1-2-code').html())
+        </script>
+
+        <h3>
+
+            Experimente $fib1(n)$ (x = n | y = time unit)
+        </h3>
+
+        <div id="ad-1-2-experiments" style="height: 250px;"></div>
+        <script>
+            new Morris.Line({
+              // ID of the element in which to draw the chart.
+              element: 'ad-1-2-experiments',
+              // do values relate to dates (time)?
+              parseTime: false,
+              // Chart data records -- each entry in this array corresponds to a point on
+              // the chart.
+              data: ad_1_2_data,
+              // The name of the data record attribute that contains x-values.
+              xkey: 'xK',
+              // A list of names of data record attributes that contain y-values.
+              ykeys: ['yK'],
+              // Labels for the ykeys -- will be displayed when you hover over the
+              // chart.
+              labels: ['time unit']
+            });
+        </script>
+
+        <!------------------------------------------------------------------------------------------------------------->
+        <!-- fib2------------------------------------------------------------------------------------------------------>
+        <h3>
+            Implementierung (Aufgabe 3,4) $fib2(n)$
+        </h3>
+
+        <!-- In diesem Element wird der Inhalt des scripts mit der ID ad-1-2-code angezeigt -->
+        <pre id="ad-1-3-source"></pre>
+        <h3>
+            Testergebnisse
+        </h3>
+        <div id="ad-1-3-results"></div>
+
+        <!-- Code und Tests hier hin -->
+        <script id="ad-1-3-code">
+            var ad_1_3_data = [];
+
+            // Code Fib endrekursiv memoization
+            var arr = [1,1];
+
+            var Fib2 = function(){
+
+                this.unit_of_time = 0;
+                this.fib2 = function (n) {
+                    this.unit_of_time++;
+                    if (arr[n] == null)
+                    {
+                        this.fib2Helper(n,2);
+                    }
+                    else
+                    {
+                        return arr[n];
+                    }
+                }
+
+                this.fib2Helper = function (n,i) {
+                    this.unit_of_time++;
+                    if (n >= i){
+                        if(arr[i] == null){
+                            arr[i] = arr[i-1] + arr[i-2];
+                        }
+                       return this.fib2Helper(n,i+1);
+                    }
+                }
+
+            }
+
+            // Experiments
+            for(i = 0; i < 50; i ++) {
+                var fib2 = new Fib2();
+                fib2.fib2(i);
+
+                ad_1_3_data.push({
+                    xK : i,
+                    yK: fib2.unit_of_time
+                });
+            }
+
+            // Tests
+            assert(ad_1_3_data.length == 50, "experiments have collected data");
+            assert((new Fib2()).fib2(0) == 1,"'$fib(0)$' working correctly");
+            assert((new Fib2()).fib2(1) == 1,"'$fib(1)$' working correctly");
+            assert((new Fib2()).fib2(2) == 2,"'$fib(2)$' working correctly");
+            assert((new Fib2()).fib2(3) == 3,"'$fib(3)$' working correctly");
+            assert((new Fib2()).fib2(4) == 5,"'$fib(4)$' working correctly");
+            assert((new Fib2()).fib2(5) == 8,"'$fib(5)$' working correctly");
+        </script>
+
+        <!-- dieser Code zeigt die Implementierung und die Tests an -->
+        <script>
+            $('pre#ad-1-3-source').html($('#ad-1-3-code').html())
+        </script>
+
+        <h3>
+            Experimente $fib2(n)$ (x = n | y = time unit)
+        </h3>
+
+        <div id="ad-1-3-experiments" style="height: 250px;"></div>
+        <script>
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'ad-1-3-experiments',
+                // do values relate to dates (time)?
+                parseTime: false,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: ad_1_3_data,
+                // The name of the data record attribute that contains x-values.
+                xkey: 'xK',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['yK'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['time unit']
+            });
+        </script>
+        <!------------------------------------------------------------------------------------------------------------->
+        <!-- fib3------------------------------------------------------------------------------------------------------>
+        <h3>
+            Implementierung (Aufgabe 3,4) $fib3(n)$
+        </h3>
+
+        <!-- In diesem Element wird der Inhalt des scripts mit der ID ad-1-2-code angezeigt -->
+        <pre id="ad-1-4-source"></pre>
+        <h3>
+            Testergebnisse
+        </h3>
+        <div id="ad-1-4-results"></div>
+
+        <!-- Code und Tests hier hin -->
+        <script id="ad-1-4-code">
+            var ad_1_4_data = [];
+
+            // Code Fib endrekursiv ohne memoization
+            var Fib3 = function(){
+
+                this.unit_of_time = 0;
+
+                this.fib3 = function (n) {
+                    this.unit_of_time++;
+                    return this.fib3Helper(n,1,0);
+                }
+
+                this.fib3Helper = function(n, acc1, acc2){
+                    this.unit_of_time++;
+                    if(n <= 1) return acc1+acc2;
+                    return this.fib3Helper(n-1, acc1+acc2, acc1);
+                }
+            }
+
+            // Experiments
+            for(i = 0; i < 50; i ++) {
+                var fib3 = new Fib3();
+                fib3.fib3(i);
+
+                ad_1_4_data.push({
+                    xK : i,
+                    yK: fib3.unit_of_time
+                });
+            }
+
+            // Tests
+            assert(ad_1_4_data.length == 50, "experiments have collected data");
+            assert((new Fib3()).fib3(0) == 1,"'$fib(0)$' working correctly");
+            assert((new Fib3()).fib3(1) == 1,"'$fib(1)$' working correctly");
+            assert((new Fib3()).fib3(2) == 2,"'$fib(2)$' working correctly");
+            assert((new Fib3()).fib3(3) == 3,"'$fib(3)$' working correctly");
+            assert((new Fib3()).fib3(4) == 5,"'$fib(4)$' working correctly");
+            assert((new Fib3()).fib3(5) == 8,"'$fib(5)$' working correctly");
+        </script>
+
+        <!-- dieser Code zeigt die Implementierung und die Tests an -->
+        <script>
+            $('pre#ad-1-4-source').html($('#ad-1-4-code').html())
+        </script>
+
+        <h3>
+            Experimente $fib3(n)$ (x = n | y = time unit)
+        </h3>
+
+        <div id="ad-1-4-experiments" style="height: 250px;"></div>
+        <script>
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'ad-1-4-experiments',
+                // do values relate to dates (time)?
+                parseTime: false,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: ad_1_4_data,
+                // The name of the data record attribute that contains x-values.
+                xkey: 'xK',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['yK'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['time unit']
+            });
+        </script>
+    <!----------------------------------------------------------------------------------------------------------------->
+    <!-- fib4---------------------------------------------------------------------------------------------------------->
+        <h3>
+            Implementierung (Aufgabe 6) $fib4(n)$
+        </h3>
+
+        <!-- In diesem Element wird der Inhalt des scripts mit der ID ad-1-2-code angezeigt -->
+        <pre id="ad-1-5-source"></pre>
+        <h3>
+            Testergebnisse
+        </h3>
+        <div id="ad-1-5-results"></div>
+
+        <!-- Code und Tests hier hin -->
+        <script id="ad-1-5-code">
+            var ad_1_5_data = [];
+
+            // Code Fib endrekursiv ohne memoization
+            var Fib4 = function(){
+
+                this.fib4 = function(n) {
+
+                    this.unit_of_time = 0;
+
+                    if(n<1)  return 1;
+                    else
+                    {
+                        var fib1=0;
+                        var fib2=1;
+
+                        for(j = 1; j <= n; j++)
+                        {
+                            this.unit_of_time++;
+                            var fib1_tmp = fib2;
+                            var fib2_tmp = fib1 + fib2;
+
+                            fib1 = fib1_tmp;
+                            fib2 = fib2_tmp;
+
+                        }
+                        return fib2;
+                    }
+                }
+            }
+
+            // Experiments
+            for(i = 0; i < 50; i ++) {
+
+                var fib4 = new Fib4();
+                var result = fib4.fib4(i);
+
+                ad_1_5_data.push({
+                    xK : i,
+                    yK: fib4.unit_of_time
+                });
+            }
+
+            // Tests
+            assert(ad_1_5_data.length == 50, "experiments have collected data ("+ad_1_5_data.length+")");
+            assert((new Fib4()).fib4(0) == 1,"'$fib(0)$' working correctly");
+            assert((new Fib4()).fib4(1) == 1,"'$fib(1)$' working correctly");
+            assert((new Fib4()).fib4(2) == 2,"'$fib(2)$' working correctly");
+            assert((new Fib4()).fib4(3) == 3,"'$fib(3)$' working correctly");
+            assert((new Fib4()).fib4(4) == 5,"'$fib(4)$' working correctly");
+            assert((new Fib4()).fib4(5) == 8,"'$fib(5)$' working correctly");
+        </script>
+
+        <!-- dieser Code zeigt die Implementierung und die Tests an -->
+        <script>
+            $('pre#ad-1-5-source').html($('#ad-1-5-code').html())
+        </script>
+
+        <h3>
+            Experimente $fib4(n)$ (x = n | y = time unit)
+        </h3>
+
+        <div id="ad-1-5-experiments" style="height: 250px;"></div>
+
+        <script>
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'ad-1-5-experiments',
+                // do values relate to dates (time)?
+                parseTime: false,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: ad_1_5_data,
+                // The name of the data record attribute that contains x-values.
+                xkey: 'xK',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['yK'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['time unit']
+            });
+        </script>
+
+        <h3>
+            Antwort 5
+        </h3>
+        <ol>
+            <li>
+                Ja $fib2(n)$ & $fib3(n)$ unterscheiden sich.
+                $fib2(n)$ speichert die bisher berechneten Ergebnisse im Array, was einen Platzaufwand von $O(n)$
+                erfordert.
+
+            </li>
+        </ol>
+    <!----------------------------------------------------------------------------------------------------------------->
+    <!-- Übungsaufgabe 1.3 -------------------------------------------------------------------------------------------->
+        <h2>
+            Übungsaufgabe 1.3: Verkettete und Sequentielle Listen. Unsere Listen sollen folgende Me-<br/>
+            thoden unterstützen
+        </h2>
+
+        <!-- Aufgabenstellung -->
+        <p>
+            • Ein Element vorne anfügen. cons(x, list)<br/>
+            • Vorderstes Element zurückgeben. head(list)<br/>
+            • Restliste zurückgeben. tail(list)<br/>
+            • Länge einer Liste bestimmen. length(list)<br/>
+            • Ist die Liste leer? isempty(list)<br/>
+            • Ein Element nach n Elementen einfügen. insert(x, n, list)<br/>
+            Dabei bedeutet nach n = 0 Elementen einfügen, das man das Element am Anfang<br/>
+            einfügt. (Klären Sie, was passieren soll, wenn n größer als die Anzahl der Listenelemente<br/>
+            ist!)<br/>
+        </p>
+
+        <ol>
+                _________________________________________________________________________________________<br/>
+            <li>
+                Implementieren Sie eine einfach verkettete Liste.<br/>
+                _________________________________________________________________________________________
+            </li>
+            <li>
+                Messung des Zeitaufwandes: Wir nehmen plausiblerweise an, dass der Zeitaufwand einer<br/>
+                Listenoperation in dieser Implementation proportional zur Anzahl der Dereferenzierun-<br/>
+                gen ist. Fügen Sie Messung des Zeitaufwandes Hilfsvariablen ein, die mitzählen, wie oft<br/>
+                Referenzen “verfolgt” wurden. Implementieren Sie Methoden, um diese Zähler abzufra-<br/>
+                gen, zurücksetzen usw.<br/>
+                _________________________________________________________________________________________
+            </li>
+            <li>
+                Ein ersten Experiment: Fügen Sie nacheinander die Werte i von 1 bis n in eine leere<br/>
+                Liste ein – jeweils am Anfang der Liste. Bestimmen Sie den Zeitaufwand mit obigen<br/>
+                Zählern. Ist das gemessene Ergebnis der zu erwartende Wert?<br/>
+                _________________________________________________________________________________________
+            </li>
+            <li>
+                Wie zuvor, nur dass Sie am Ende einfügen.<br/>
+                _________________________________________________________________________________________
+            </li>
+            <li>
+                Noch ein Experiment: Fügen Sie nacheinander die Werte i von 1 bis n in eine leere Liste<br/>
+                ein, wobei das Element i an eine zufällige Position zwischen 0 und i ? 1 eingefügt werden<br/>
+                soll.<br/>
+                Führen Sie das Experiment t-mal durch und bestimmen Sie den Mittwelwert für den<br/>
+                Zeitaufwand.<br/>
+                Tragen Sie den mittleren Zeitaufwand als Funktion gegen die Anzahl t der Versuche auf.<br/>
+                Vergleichen Sie die Ergebnisse mit den beiden vorherigen Experimenten!<br/>
+                _________________________________________________________________________________________
+            </li>
+            <li>
+                Implementieren Sie eine sequentielle (Array-basierte) Liste.<br/>
+                _________________________________________________________________________________________
+
+            </li>
+            <li>
+                Erweitern Sie Ihre Implementierung der sequentiellen Liste mit geeigneten Zählern zur<br/>
+                Bestimmung dest Zeitaufwands der angebotenen Operationen.<br/>
+                _________________________________________________________________________________________
+
+            </li>
+            <li>
+                Führen Sie die mit der verketteten Liste durchgeführten Experimente mit der sequenti-<br/>
+                ellen Liste durch.<br/>
+                _________________________________________________________________________________________
+
+            </li>
+            <li>
+                Vergleichen Sie die beiden Implementierungsvarianten der Liste anhand der Ergebnisse<br>
+                der oben geforderten Experimente.<br/>
+                _________________________________________________________________________________________
+
+            </li>
+        </ol>
+
+        <h3>
+            Implementierung (Antwort 1)
+        </h3>
+
+        <!-- In diesem Element wird der Inhalt des scripts mit der ID ad-1-2-code angezeigt -->
+        <pre id="ad-1-6-source"></pre>
+        <h3>
+            Testergebnisse
+        </h3>
+        <div id="ad-1-6-results"></div>
+
+        <!-- Code und Tests hier hin -->
+        <script id="ad-1-6-code">
+
+            var ad_1_6_data = [];
+
+            // Code ListObject
+            ListObject = function(x){
+
+                var name = x;
+                var next = null;
+
+                this.getNext = function(){
+                    return next;
+                }
+
+                this.getName = function(){
+                    return name;
+                }
+
+                this.setNext = function(x){
+                    next = x;
+                }
+            }
+
+
+            // Code SimpleList
+            SimpleList = function(){
+                counter = 0;
+
+                this.getCounter = function(){
+                    return counter;
+                }
+
+                // head Object
+                head = null;
+
+                this.getHead = function(){
+                    return head;
+                }
+
+                this.setHead = function(x){
+                    head = x;
+                }
+
+                // add List Object
+                this.cons = function(x) {
+
+                    if(head == null){
+                        head = new ListObject(x);
+                    }else{
+
+                        var newListObj = new ListObject(x);
+                        var tmpHead = Object.create(head);
+
+                        newListObj.setNext(tmpHead);
+                        head = newListObj;
+                    }
+                    counter++;
+                }
+
+
+                // return New SimpleList without head
+                this.tail = function() {
+
+                    counter++;
+
+                    var oldHead = Object.create(head);
+                    this.setHead((head == null? null : head.getNext()));
+
+                    return oldHead
+                }
+
+                // returns List length
+                this.length = function() {
+
+                    if(!this.isEmpty()){
+                        var next  = Object.create(head);
+                        return l1(next,0);
+                    }else{
+                        return 0;
+                    }
+
+                    function l1 (listObj,i){
+
+                        counter++;
+                        if(listObj == null){
+                            return i;
+                        }
+
+                        var tmp = listObj.getNext();
+                        return l1(tmp,i+1);
+                    }
+                }
+
+                // returns true if the List is empty
+                this.isEmpty = function() {
+                    counter++;
+                    return (head == null || !(head instanceof ListObject));
+                }
+
+                // add List Object at position n
+                this.insert = function(x,n) {
+
+                    var lengthVal = this.length();
+                    if(n < lengthVal){
+
+                        var next = Object.create(head);
+                        for(var i = 0; i < lengthVal; i++){
+
+                            if(n == i){
+                                var newListObj = new ListObject(x);
+                                newListObj.setNext(next.getNext());
+                                next.setNext(newListObj);
+                                counter+=3;
+                                return true;
+                            }else{
+
+                                next = next.getNext();
+                                counter++;
+                            }
+                        }
+
+                    }else{
+                        return false;
+                    }
+                }
+
+            }
+
+
+            var myList = new SimpleList();
+            // Experiments
+            for(i = 0; i < 50; i ++) {
+
+                myList.cons(i);
+
+                ad_1_6_data.push({
+                    xK : i,
+                    yK: myList.getCounter()
+                });
+            }
+
+
+
+            // Tests
+            assert(ad_1_6_data.length === 50, "experiments have collected data ("+ad_1_6_data.length+")");
+            assert((myList.length())  === 50," Length & cons working correctly ("+myList.length()+")");
+            assert((myList.tail()).getName() === 49, "Tail works correctly" );
+            assert(myList.length() === 49, "Tail works correctly");
+            assert((myList.getHead().getName()) === 48,"get Head works correctly ("+myList.getHead().getName()+")");
+            assert((myList.isEmpty()) === false,"is Empty works correctly");
+            assert((myList.insert("bla",10)) === true,"insert works correctly 1");
+            assert((myList.length()) === 50 ,"insert works correctly 2");
+//            assert((new Fib1()).fib(5) === 8,"'$fib(5)$' working correctly");
+        </script>
+
+        <!-- dieser Code zeigt die Implementierung und die Tests an -->
+        <script>
+            $('pre#ad-1-6-source').html($('#ad-1-6-code').html())
+        </script>
+
+        <h3>
+            Aufgabe 3<br/>
+            Experimente $SimpleList$ (x = n | y = time unit)
+        </h3>
+
+        <div id="ad-1-6-experiments" style="height: 250px;"></div>
+        <script>
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'ad-1-6-experiments',
+                // do values relate to dates (time)?
+                parseTime: false,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: ad_1_6_data,
+                // The name of the data record attribute that contains x-values.
+                xkey: 'xK',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['yK'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['Zeitaufwand für Operation']
+            });
+        </script>
+
+
+        <script>
+            // Test für Aufgabe 4
+
+            ad_1_7_data = [];
+            var myList = new SimpleList();
+            myList.cons(0);
+            for(var i = 0; i < 59; i++){
+                ad_1_7_data.push({
+
+                    result :myList.insert(i,myList.length()-1),
+                    xK : i,
+                    yK : myList.getCounter()
+
+                });
+
+            }
+        </script>
+
+
+        <h3>
+            Aufgabe 4<br/>
+            Experimente $SimpleList$ (x = n | y = time unit)
+        </h3>
+
+        <div id="ad-1-7-experiments" style="height: 250px;"></div>
+        <script>
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'ad-1-7-experiments',
+                // do values relate to dates (time)?
+                parseTime: false,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: ad_1_7_data,
+                // The name of the data record attribute that contains x-values.
+                xkey: 'xK',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['yK'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['Zeitaufwand für Operation']
+            });
+        </script>
+
+        <script>
+            // Test für Aufgabe 5 RANDOM
+
+            function randomRange(min, max) {
+                return ~~(Math.random() * (max - min + 1)) + min
+            }
+
+            ad_1_8_data = [];
+            var myList = new SimpleList();
+            myList.cons(0);
+
+            for(var i = 0; i < 60; i++){
+                ad_1_8_data.push({
+
+                    result :myList.insert(i,randomRange(0,(myList.length()-1))),
+                    xK : i,
+                    yK : myList.getCounter()
+
+                });
+            }
+        </script>
+
+
+        <h3>
+            Aufgabe 5 (RANDOM)<br/>
+            Experimente $SimpleList$ (x = n | y = time unit)
+        </h3>
+
+        <div id="ad-1-8-experiments" style="height: 250px;"></div>
+        <script>
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'ad-1-8-experiments',
+                // do values relate to dates (time)?
+                parseTime: false,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: ad_1_8_data,
+                // The name of the data record attribute that contains x-values.
+                xkey: 'xK',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['yK'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['Zeitaufwand für Operation']
+            });
+        </script>
+
+        <!------------------------------------------------------------------------------------------------------------->
+        <!-- Aufgabe 6 Array Liste ------------------------------------------------------------------------------------>
+        <h3>
+            Implementierung (Antwort 6)
+        </h3>
+
+        <!-- In diesem Element wird der Inhalt des scripts mit der ID ad-1-2-code angezeigt -->
+        <pre id="ad-1-9-source"></pre>
+        <h3>
+            Testergebnisse
+        </h3>
+        <div id="ad-1-9-results"></div>
+
+        <!-- Code und Tests hier hin -->
+        <script id="ad-1-9-code">
+
+            var ad_1_9_data = [];
+
+
+
+            // Code sequentielle (Array-basierte)
+            ArrayList = function(){
+
+                counter = 0;
+                arr = [];
+
+
+                this.getCounter = function(){
+                    return counter;
+                }
+
+
+                // head
+                this.getHead = function(){
+                    return arr[0];
+                }
+
+                // add List Object
+                this.cons = function(x) {
+
+                    var tmparr = [];
+                    tmparr.push(x);
+                    counter++;
+
+                    for(var i = 0; i < arr.length; i++){
+
+                        tmparr.push(arr[i]);
+                        counter++;
+                    }
+
+                    arr = tmparr;
+                }
+
+                this.tail = function(){
+
+                    var currentLenght = this.length();
+                    var newArr = [];
+
+                    for(var i = 1; i < currentLenght;i++){
+
+                        newArr.push(arr[i]);
+                    }
+
+                    arr = newArr;
+                }
+
+                // returns List length
+                this.length = function() {
+
+                    var i = 0;
+                    for(o in arr){
+                        counter++;
+                        i++;
+                    }
+                    return i;
+                }
+
+                // returns true if the List is empty
+                this.isEmpty = function() {
+                    return (this.length() < 1);
+                }
+
+                // add List Object at position n
+                this.insert = function(x,n) {
+
+                    var newArr = []
+                    var i = 0;
+
+                    for(o in arr){
+
+
+                        if(i == n){
+                            newArr.push(x);
+                            newArr.push(o);
+                            counter+=2;
+                        }else{
+                            newArr.push(o);
+                            counter++;
+                        }
+
+                        i++;
+                    }
+
+                    arr = newArr;
+                }
+
+
+            }
+
+
+            var myList = new ArrayList();
+            // Experiments
+            for(i = 0; i < 50; i ++) {
+
+                myList.cons(i);
+
+                ad_1_9_data.push({
+                    xK : i,
+                    yK: myList.getCounter()
+                });
+            }
+
+
+
+            // Tests
+            assert(ad_1_9_data.length === 50, "experiments have collected data ("+ad_1_9_data.length+")");
+            assert((myList.length())  === 50," Length & cons working correctly ("+myList.length()+")");
+            myList.tail();
+            assert(myList.length() === 49, "Tail works correctly ("+myList.length()+")");
+            assert((myList.getHead()) === 48,"get Head works correctly ("+myList.getHead()+")");
+            assert((myList.isEmpty()) === false,"is Empty works correctly");
+            myList.insert("bla",10);
+            assert(myList.length() === 50 ,"insert works correctly ("+myList.length()+")");
+            //            assert((new Fib1()).fib(5) === 8,"'$fib(5)$' working correctly");
+        </script>
+
+        <!-- dieser Code zeigt die Implementierung und die Tests an -->
+        <script>
+            $('pre#ad-1-9-source').html($('#ad-1-9-code').html())
+        </script>
+
+        <h3>
+            Aufgabe 6<br/>
+            Experimente $(Array-basierte) Liste$ (x = n | y = time unit)
+        </h3>
+
+        <div id="ad-1-9-experiments" style="height: 250px;"></div>
+        <script>
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'ad-1-9-experiments',
+                // do values relate to dates (time)?
+                parseTime: false,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: ad_1_6_data,
+                // The name of the data record attribute that contains x-values.
+                xkey: 'xK',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['yK'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['Zeitaufwand für Operation']
+            });
+        </script>
+        <!------------------------------------------------------------------------------------------------------------->
+
+
+    </body>
+</html>
