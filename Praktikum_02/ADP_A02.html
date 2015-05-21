@@ -3,6 +3,7 @@
 		Saeed Shanidar, Dimitri Meier --- Praktikum02
 	</header>
 	<body>
+		<meta charset=""
 		<p>
 			<h1>&Uuml;bungsaufgabe 2.1</h1>
 			<!-- http://rise4fun.com/Dafny/xatN -->
@@ -24,6 +25,11 @@
 			<h1>&Uuml;bungsaufgabe 2.2</h1>
 			<a href="http://rise4fun.com/Dafny/XTbf" target="_blank"> &Uuml;bungsaufgabe 2.2:</a><br /><br />
 
+			Wir berechnen T(n) für kleine Werte, raten eine Lösung und beweisen diese.<br />
+			f(n)=	{2, n=0 }<br />
+			{3*f(n-1)+2, n>0 }<br /><br />
+
+
 			f(0):= 2 <br />
 			f(1):= 8 <br />
 			f(2):= 26 <br />
@@ -33,14 +39,36 @@
 			f(6):= 2186 <br />
 			f(7):= 6560 <br />
 			f(8):= 19682 <br />
-			f(9):= 59048 <br />
+			f(9):= 59048 <br /><br />
+
+			Loesung raten? f(n)=3^(n+1)-1. Dies ist nun noch zu beweisen!<br /><br />
+
+			Induktionsbeweis<br />
+
+			Zu zeigen: f(n)=3^(n+1)-1<br />
+			IA: Fur n=0 gilt f(n) = 3^(n+1)-1: 3^(0+1)-1 = 3^1-1 = 3-1 = 2<br />
+			IB: F&uuml;r ein beliebiges, festes n>=1 gilt f(n)=3^(n+1)-1<br />
+			IS: f(n+1) = 3*f(n)+2 = 3*(3^(n+1)-1)+2 =3* 3^(n+1)-3+2 =   3^(n+2)-1<br />
+			Somit gilt f&uuml;r alle n>=1 f(n) = 3^(n+1) - 1<br />
+			Rekursives Einsetzen<br /><br />
+
+			F(N) =3*F(n-1)+2<br />
+			F(N) =3*(3*F(n-2)+2)+2 = 9*F(n-2) + 6 + 2<br />
+			F(N) =9*(3*F(n-3) + 2) + 6 + 2 = 27*F(n-3) + 18 +6 + 2<br />
+			F(N) =3^k*F(n-k) + 3^(k-1)*2+3^(k-1)*2+...3^2*2+3^1*2+3^0*2<br />
+			F(N) =3^(n+1)-1<br />
+			Endgleichung :  3^(n+1)-1<br /><br />
+
 		</p>
 		
 		<p>
 			<h1>&Uuml;bungsaufgabe 2.3</h1>
-			<a href="http://rise4fun.com/Dafny/aLGp" target="_blank"> &Uuml;bungsaufgabe 2.3:</a><br /><br />
+			<a href="http://rise4fun.com/Dafny/fHslE" target="_blank"> &Uuml;bungsaufgabe 2.3:</a><br /><br />
 
 			<h2>Algorythmus 1</h2>
+
+			
+			O((2n)+1)<br />
 
 			algorithm1([7, 5, 1, 0, 9, 3, 8, 2, 4, 6], 0):= 0 <br />
 			algorithm1([7, 5, 1, 0, 9, 3, 8, 2, 4, 6], 1):= 7 <br />
@@ -55,6 +83,8 @@
 
 			<h2>Algorythmus 2</h2>
 
+			O((2n)+1)<br />
+
 			algorithm2(2^0): 1 <br />
 			algorithm2(2^1): 2 <br />
 			algorithm2(2^2): 4 <br />
@@ -67,6 +97,10 @@
 			algorithm2(2^9): 512 <br />
 			
 			<h2>Algorythmus 3</h2>
+
+
+			
+			O(3n+n^2)<br/>
 
 			algorithm3(10):  [ 9 9 9 9 9 9 9 9 9 9 ] <br />
 		
