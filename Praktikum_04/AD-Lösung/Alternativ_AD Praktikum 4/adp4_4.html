@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>ADP4 - Aufgabe 4</title>
+		<!-- morris graph lib -->
+		<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+		<script src="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+		<!-- LaTeX-style equations -->
+		<script type="text/x-mathjax-config">MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});</script>
+		<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+		<!-- tests -->
+		<script>
+			function assert(value, desc) {
+				var li = document.createElement("li");
+				li.style.color = value ? "blue" : "red";
+				li.appendChild(document.createTextNode(desc));
+				var list = document.getElementById("results");
+				if (!list) {
+					list = document.createElement("div");
+					document.body.appendChild(list);
+				}
+				list.appendChild(li);
+			}
+		</script>
+	</head>
+	<body>
+		<h1 id="title">Algorithmen und Datenstrukturen</h1>
+		<h3>Praktikum 4 - Lars Nielsen, Patrick Nagorski, Niklas Gerwens</h3>
+		<hr />
+		<h2>Aufgabe 4</h2>
+		<p>
+			Zu berechnen ist die L&auml;nge n des l&auml;ngsten Pfades $(v0, ..., vn)$ eines
+			gerichteten Graphen $G = (V, E)$ mit Gewichtsfunktion $w : E -&gt; R$ f&uuml;r den gilt,
+			dass die Kantengewichte streng monoton zunehmen:
+			$\forall i : 0 < i < n \bullet w(v_{i-1}, v_{i}) < w(v_{1}, v_{i+1})$<br />
+			Der Graph erlaubt Kanten der Form $(v, v)$.<br />
+			Die Implementierung soll in $O(V + E * log(E))$ laufen und h&ouml;chstens $O(V + E)$
+			zus&auml;tzlichen Speicherbedarf haben.
+		</p>
+		<h3>Implementierung</h3>
+		<!-- In diesem Element wird der Inhalt des scripts mit der ID ad-4-4-results angezeigt -->
+		<pre id="ad-4-4-source"></pre>
+		<h3>Testergebnisse</h3>
+		<div id="ad-4-4-results"></div>
+		<script id="ad-4-4-code">
+			// Code
+			function Graph() {
+				this.counterTime  = 0;
+				this.counterPlace = 0;
+				this.vertexCount  = 0;
+				this.edgeCount    = 0;
+				this.vertices     = [];
+				this.edges        = [];
+				
+				this.addVertex = function(value) {
+					var vertex = new Vertex(value);
+					this.vertices[this.vertexCount++] = vertex;
+					return vertex;
+				}
+				
+				this.connect = function(s, t, w) {
+					var edge = new Edge(s, t, w);
+					this.edges[this.edgeCount++] = edge;
+					s.addOutgoingEdge(edge);
+				}
+				
+				this.longestStronglyMonotonousIncreasingPath = function() {
+					this.counterTime = 0;
+					this.counterPlace = 0;
+					var longestPath = 0;
+					for(var i=0; i < this.vertexCount; i++) {
+						var vertex = this.vertices[i];
+						var longestPathOfVertex = this.longestStronglyMonotonousIncreasingPathOfVertex(vertex, 0);
+						if(longestPathOfVertex > longestPath) {
+							longestPath = longestPathOfVertex;
+						}
+					}
+					return longestPath;
+				}
+				
+				this.longestStronglyMonotonousIncreasingPathOfVertex = function(vertex, lastWeight) {
+					this.counterTime++;
+					if(!vertex.visited) {
+						var longestPath = vertex.laengsterPfad;
+						var hoechstesGewicht = vertex.hoechstesGewicht;
+						
+						var visited = true;
+						for(var i=0; i < vertex.outgoingEdgeCount; i++) {
+							var outgoingEdge = vertex.outgoingEdges[i];
+							var other  = outgoingEdge.target;
+							var weight = outgoingEdge.weight;
+							
+							if(weight > lastWeight) {
+								this.longestStronglyMonotonousIncreasingPathOfVertex(other, weight);
+								var otherHoechstesGewicht = other.hoechstesGewicht;
+								var otherLaengsterPfad    = other.laengsterPfad;
+								
+								if(otherLaengsterPfad+1 >= longestPath && weight < otherHoechstesGewicht) {
+									longestPath = otherLaengsterPfad+1;
+									hoechstesGewicht = weight;
+								}
+							} else {
+								visited = false;
+							}
+						}
+						vertex.laengsterPfad = longestPath;
+						vertex.hoechstesGewicht = hoechstesGewicht;
+						vertex.visited = visited;
+					}
+					return vertex.laengsterPfad;
+				}
+				
+				this.resetVertexAttributes = function() {
+					for(var i=0; i < this.vertexCount; i++) {
+						this.vertices[i].resetLongestPathAttributes();
+					}
+				}
+			}
+			
+			function Vertex(value) {
+				this.value = value;
+				this.outgoingEdgeCount = 0;
+				this.outgoingEdges = [];
+				
+				this.laengsterPfad = 0;
+				this.hoechstesGewicht = Number.MAX_VALUE;
+				this.visited  = false;
+				
+				this.addOutgoingEdge = function(edge) {
+					this.outgoingEdges[this.outgoingEdgeCount++] = edge;
+				}
+				
+				this.getOutgoingEdges = function() {
+					return this.outgoingEdges;
+				}
+				
+				this.resetLongestPathAttributes = function() {
+					this.laengsterPfad = 0;
+					this.hoechstesGewicht = Number.MAX_VALUE;
+					this.visited  = false;
+				}
+			}
+			
+			function Edge(s, t, w) {
+				this.source = s;
+				this.target = t;
+				this.weight = w;
+			}
+			
+			// Tests
+			var graph1 = new Graph();
+			var va = graph1.addVertex("A");
+			var vb = graph1.addVertex("B");
+			var vc = graph1.addVertex("C");
+			var vd = graph1.addVertex("D");
+			var ve = graph1.addVertex("E");
+			var vf = graph1.addVertex("F");
+			var vh = graph1.addVertex("H");
+			var vg = graph1.addVertex("G");
+			graph1.connect(va, vb, 9);
+			graph1.connect(va, vc, 4);
+			graph1.connect(va, vd, 2);
+			graph1.connect(vb, vg, 4);
+			graph1.connect(vc, vd, 6);
+			graph1.connect(vc, vg, 7);
+			graph1.connect(vd, ve, 4);
+			graph1.connect(vd, vf, 8);
+			graph1.connect(ve, vg, 1);
+			graph1.connect(ve, vh, 6);
+			graph1.connect(vf, vc, 3);
+			graph1.connect(vf, ve, 4);
+			graph1.connect(vg, vf, 2);
+			graph1.connect(vg, vh, 1);
+			assert(graph1.longestStronglyMonotonousIncreasingPathOfVertex(va, 0) === 3, "G1: Der laengste streng monoton steigende Pfad von A ist 3");
+			assert(graph1.longestStronglyMonotonousIncreasingPathOfVertex(vb, 0) === 1, "G1: Der laengste streng monoton steigende Pfad von B ist 1");
+			assert(graph1.longestStronglyMonotonousIncreasingPathOfVertex(vc, 0) === 2, "G1: Der laengste streng monoton steigende Pfad von C ist 2");
+			assert(graph1.longestStronglyMonotonousIncreasingPathOfVertex(vd, 0) === 2, "G1: Der laengste streng monoton steigende Pfad von D ist 2");
+			assert(graph1.longestStronglyMonotonousIncreasingPathOfVertex(ve, 0) === 5, "G1: Der laengste streng monoton steigende Pfad von E ist 5");
+			assert(graph1.longestStronglyMonotonousIncreasingPathOfVertex(vf, 0) === 3, "G1: Der laengste streng monoton steigende Pfad von F ist 3");
+			assert(graph1.longestStronglyMonotonousIncreasingPathOfVertex(vg, 0) === 4, "G1: Der laengste streng monoton steigende Pfad von G ist 4");
+			assert(graph1.longestStronglyMonotonousIncreasingPathOfVertex(vh, 0) === 0, "G1: Der laengste streng monoton steigende Pfad von H ist 0");
+			assert(graph1.longestStronglyMonotonousIncreasingPath() === 5, "G1: Der laengste streng monoton steigende Pfad ist 5 (siehe Abbildung G1)");
+			
+			var graph2 = new Graph();
+			var vx = graph2.addVertex("X");
+			graph2.connect(vx, vx, 10);
+			assert(graph2.longestStronglyMonotonousIncreasingPathOfVertex(vx, 0) === 1, "G2: Der laengste streng monoton steigende Pfad von X ist 1");
+			assert(graph2.longestStronglyMonotonousIncreasingPath() === 1, "G2: Der laengste streng monoton steigende Pfad ist 10 (siehe Abbildung G2)");
+			
+			var graph3 = new Graph();
+			var ka = graph3.addVertex('A');
+			var kb = graph3.addVertex('B');
+			var kc = graph3.addVertex('C');
+			var kd = graph3.addVertex('D');
+			var ke = graph3.addVertex('E');
+			var kf = graph3.addVertex('F');
+			var kg = graph3.addVertex('G');
+			var kh = graph3.addVertex('H');
+			graph3.connect(kb, ka, 8);
+			graph3.connect(kc, ka, 6);
+			graph3.connect(kd, kb, 6);
+			graph3.connect(ke, kd, 4);
+			graph3.connect(ke, kc, 2);
+			graph3.connect(kf, kg, 1);
+			graph3.connect(kg, kh, 2);
+			graph3.connect(kh, kf, 3);
+			assert(graph3.longestStronglyMonotonousIncreasingPathOfVertex(ka, 0) === 0, "G3: Der laengste streng monoton steigende Pfad von A ist 0");
+			assert(graph3.longestStronglyMonotonousIncreasingPathOfVertex(kb, 0) === 1, "G3: Der laengste streng monoton steigende Pfad von B ist 1");
+			assert(graph3.longestStronglyMonotonousIncreasingPathOfVertex(kc, 0) === 1, "G3: Der laengste streng monoton steigende Pfad von C ist 1");
+			assert(graph3.longestStronglyMonotonousIncreasingPathOfVertex(kd, 0) === 2, "G3: Der laengste streng monoton steigende Pfad von D ist 2");
+			assert(graph3.longestStronglyMonotonousIncreasingPathOfVertex(ke, 0) === 3, "G3: Der laengste streng monoton steigende Pfad von E ist 3");
+			assert(graph3.longestStronglyMonotonousIncreasingPathOfVertex(kf, 0) === 3, "G3: Der laengste streng monoton steigende Pfad von F ist 3");
+			assert(graph3.longestStronglyMonotonousIncreasingPathOfVertex(kg, 0) === 2, "G3: Der laengste streng monoton steigende Pfad von G ist 2");
+			assert(graph3.longestStronglyMonotonousIncreasingPathOfVertex(kh, 0) === 1, "G3: Der laengste streng monoton steigende Pfad von H ist 1");
+			assert(graph3.longestStronglyMonotonousIncreasingPath() === 3, "G3: Der laengste streng monoton steigende Pfad ist 3 (siehe Abbildung G3)");
+			
+			// Experiments
+			var ad_4_4_counter = [];
+			
+			var graph = new Graph();
+			var knoten = 100;
+			var kanten = 300;
+			for(var i=0 ; i < knoten ; i++) {
+				graph.addVertex(i);
+			}
+			for(var i=0; i < kanten; i++) {
+				var v1 = graph.vertices[Math.floor(Math.random()*graph.vertexCount)];
+				var v2 = graph.vertices[Math.floor(Math.random()*graph.vertexCount)];
+				graph.connect(v1, v2, i+1);
+				
+				graph.longestStronglyMonotonousIncreasingPath();
+				ad_4_4_counter.push({experiment : graph.edgeCount, counter : graph.counterTime});
+				graph.resetVertexAttributes();
+			}
+		</script>
+		<!-- dieser Code zeigt die Implementierung und die Tests an -->
+		<script>$('pre#ad-4-4-source').html($('#ad-4-4-code').html())</script>
+		<div>
+			<img src="img/adp4_4_Graph1.png" style="border: 1px solid black" />
+			<img src="img/adp4_4_Graph2.png" style="border: 1px solid black" />
+			<img src="img/adp4_4_Graph3.png" style="border: 1px solid black" />
+		</div>
+		
+		<h3>Experimente</h3>
+		<h4>Laufzeiten</h4>
+		<p>
+			Die Grafik zeigt die Laufzeit f&uuml;r einen Graphen bestehend aus 100 Knoten, der &uuml;ber
+			$x$ Kanten verf&uuml;gt. Aus ihr kann man ablesen, dass die Laufzeit unter
+			$O(|V|+|E|*log(|E|))$ liegt.
+		</p>
+		<div id="ad-4-4-counter" style="height: 250px;"></div>
+		<script>
+			new Morris.Line({
+				element: 'ad-4-4-counter', // ID of the element in which to draw the chart.
+				parseTime: false, // do values relate to dates (time)?
+				data: ad_4_4_counter, // Chart data records -- each entry in this array corresponds to a point on the chart.
+				xkey: 'experiment', // The name of the data record attribute that contains x-values.
+				ykeys: ['counter'], // A list of names of data record attributes that contain y-values.
+				labels: ['Counter'] // Labels for the ykeys -- will be displayed when you hover over the chart.
+			});
+		</script>
+		<hr />
+		<div>
+			<p>
+				<a href="index.html">Zur&uuml;ck</a> | 
+				<a href="adp4_1.html">Aufgabe 1</a> |
+				<a href="adp4_2.html">Aufgabe 2</a> |
+				<a href="adp4_3.html">Aufgabe 3</a> |
+				Aufgabe 4
+			</p>
+		</div>
+	</body>
+</html>
