@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<meta charset="utf-8">
+        <title>L&ouml;sungsblatt Aufgabe 4</title>
+        <!-- morris graph lib -->
+        <link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+        <script src="http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+        <!-- LaTeX-style equations -->
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}});
+        </script>
+        <script type="text/javascript"
+                src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+        </script>
+        <!-- tests -->
+        <script type="text/javascript">
+            function assert(value, desc) {
+                var li = document.createElement("li");
+                li.style.color = value ? "green" : "red";
+                li.appendChild(document.createTextNode(desc));
+                var list = document.getElementById("results");
+                if (!list) {
+                    list = document.createElement("div");
+                    document.body.appendChild(list);
+                }
+                list.appendChild(li);
+            }
+
+            var Preconditions = {
+                checkArgument: function(condition, message) {
+                    if (!condition) {
+                        throw Error('IllegalArgumentException: ' + (message || ''));
+                    }
+                }
+            };
+
+            var counter = 0;
+            var counterTime = 0;
+
+            function count() {counter++;}
+
+            function resetCounter() {counter = 0;}
+
+            function getCounter() {return counter;}
+
+            function countTime() {counterTime++;}
+
+            function resetCounterTime() {counterTime = 0;}
+
+            function getCounterTime() {return counterTime;}
+
+        </script>
+    </head>
+    <body>
+        <h2 id="title">Aufgabe 4 <br></br> Dimitri Meier, Saeed Shanidar,<br /></h2>
+        <h2>Aufgabe 4.1 (Summenpaare)</h2>
+        <p>
+        Gegeben sei eine Sequenz S von ganzen Zahlen und eine ganze Zahl K. Zu berechnen ist die
+        Anzahl der Paare von Elementen (P;Q) aus S für die gilt:
+        P + Q = K
+        </p>
+        <p>
+        Beispiel: Bei der Eingabe sumPairs([1,5,3,7,2,2],4) existieren 4 Paare => (1,3),(3,1),(2,2),(2,2)
+        </p>
+        <h3>
+        Implementierung
+        </h3>
+        <!-- In diesem Element wird der Inhalt des scripts mit der ID ad-1-1-results angezeigt -->
+        <pre id="ad-1-1-source"></pre>
+        <h3>
+        Testergebnisse
+        </h3>
+        <div id="ad-1-1-results"></div>
+
+        <!-- Code und Tests hier hin -->
+        <script id="ad-1-1-code">
+          var ad_1_1_data = [];
+
+          var counter = 0; // Zählvariable zur Laufzeitmessung
+          
+          // Code
+        	function mergeSort (arr) {    
+        		if (arr.length < 2) return arr;
+        		
+        		var mittle = Math.floor(arr.length /2);
+        		var teilLinks = mergeSort(arr.slice(0,mittle));
+        		var teilRecht = mergeSort(arr.slice(mittle));
+        		
+        		return merge(teilLinks, teilRecht);
+        	}
+
+        	function merge (links, rechts) {
+        		var ergebnis = [];
+        		while (links.length >0 && rechts.length >0)
+        			ergebnis.push(links[0] < rechts[0]? links.shift() : rechts.shift());
+        		return ergebnis.concat(links.length? links : rechts);
+        	}
+          
+        	/*
+        		seq, Die zu durchsuchende Sequenz
+        		value, Der Wert, der überprüft werden soll
+        		@return Anzahl der summenpaare in seq, aus denen man den value bilden kann. 
+        	*/
+        	function sumPairs(seq,value)
+        	{
+        		var i = 0;
+                var ergebnis = 0;
+        		var sortierteSeq = mergeSort(seq);
+        		var j = sortierteSeq.length-1;
+        		// Die erste for-Schleife läuft in O(seq)
+        		while(i < j){
+        			counter++;
+        			var sumVal = sortierteSeq[i] + sortierteSeq[j];
+        			
+        			if(sumVal == value){
+        				
+        				if(sortierteSeq[i] == sortierteSeq[j]){
+        					ergebnis++;
+        				}
+        				else{
+        					ergebnis+=2;
+        				}
+        				
+        				var k = i;
+
+        				while(i < j && sortierteSeq[k] == sortierteSeq[i]){
+        					counter++;
+        					i++;
+        				}
+        			}
+        			else if(sumVal > value) { j--; }
+
+        			else if(sumVal < value) { i++; }
+        		}
+        		return ergebnis;
+        	}
+
+                /*****************************TESTS-ANFANG********************************/
+        	
+        	var array1 = new Array(10);
+        	for(var i=0; i < array1.length;i++){
+        		array1[i] = i+1;
+        	}
+        	
+            var array2 = new Array(4,4,4);
+
+        	var array3 = new Array(0,0,2,2,3,3,3,5);
+        	
+        	assert(4 == sumPairs(array1,5),"([1,2,3,4,5,6,7,8,9,10],5) --> 5 Möglichkeiten ");
+        	assert(2 == sumPairs(array3,3),"([0,0,2,2,3,3,3,5],3) --> 3 Möglichkeiten"); 
+        	assert(1 == sumPairs(array2,8),"([4,4,4],8) --> 1 Möglichkeit"); 
+        	assert(0 == sumPairs(array1,20),"([1,2,3,4,5,6,7,8,9,10],20) --> 0 Möglichkeiten");
+
+        	
+        	// Experimente 
+        	for(i = 0; i < 100; i ++)
+        	{
+        		var array3 = new Array(i+1); // Array = [1..100]
+        		for(var i=0; i < array3.length; i++){
+        			array3[i] = i+1;
+        		}
+        		counter=0;
+        		sumPairs(array3,i+1);
+        		ad_1_1_data.push({
+        		  experiment : i+1,
+        		  value : counter
+        		  });
+        	}
+        	
+        </script>
+        <!-- dieser Code zeigt die Implementierung und die Tests an -->
+        <script>
+        $('pre#ad-1-1-source').html($('#ad-1-1-code').html())
+        </script>
+        <h3>Ergebnis: Laufzeit vom Algorithmus O(|S| log(|S|))</h3>
+
+                      Es wird in der Berechnung  O(|S|) angezeigt, da das Array sortiert werden muss.<br>
+                      Dies erfolgt mittles MergeSort O(|S|log(|S|)).<br>
+                      Daraus folgt die Laufzeit von O(|S|log(|S|)).<br>
+        			  Die Laufzeit ist Abhängig von der Größe der Sequenz.<br>
+        	
+        			  
+        
+        <br />
+                <h3>
+                    Experiment: Zeitaufwand vom Algorithmus sumPairs(seq,value)
+                </h3>
+
+        <div id="ad-1-1-experiments" style="height: 250px;"></div>
+        <script>
+        new Morris.Line({
+          // ID of the element in which to draw the chart.
+          element: 'ad-1-1-experiments',
+          // do values relate to dates (time)?
+          parseTime: false,
+          // Chart data records -- each entry in this array corresponds to a point on
+          // the chart.
+          data: ad_1_1_data,
+          // The name of the data record attribute that contains x-values.
+          xkey: 'experiment',
+          // A list of names of data record attributes that contain y-values.
+          ykeys: ['value'],
+          // Labels for the ykeys -- will be displayed when you hover over the
+          // chart.
+          labels: ['Value']
+        });
+        </script>
+
+
+
+
+
+        <!-- Aufgabe 2 -->
+        <h2>
+            Aufgabe 4.2 (Mittelpunkte)
+        </h2>
+
+            <br>
+            Gegeben sei eine Sequenz seq von ganzen Zahlen. Zu berechnen ist ein Index i f&uuml;r den gilt,  <br>
+            dass die Summe der Elemente links gleich der Summe der Elemente rechts von i ist: <h4>$\sum\nolimits_{0 \leq j < i}$ S[j] = $\sum\nolimits_{i < k < |S|}$ S[k]</h4>
+            Der R&uuml;ckgabewert -1 zeigt an, dass es keinen solchen Index gibt. <br>
+            Die Implementierung soll in O(|S|) laufen und h&ouml;chstens O(|S|) zus&auml;tzlichen Speicherbedarf haben.
+        <h3>
+            Implementierung
+        </h3>
+        <!-- In diesem Element wird der Inhalt des scripts mit der ID ad-1-2-code angezeigt -->
+        <pre id="ad-4-2-source"></pre>
+        <h3>
+            Testergebnisse
+        </h3>
+        <div id="ad-4-2-results"></div>
+        <!-- Code und Tests hier hin -->
+        <script id="ad-4-2-code">
+            resetCounter();
+            resetCounterTime();
+            var ad_4_2data = [];
+            var ad_4_2_1data = [];
+
+
+            function mittelpunkte(seq) {
+                Preconditions.checkArgument(Array.isArray(seq), 'seq ist kein Array');
+
+                if(seq.length < 3) {
+                    return -1;
+                }
+                var links = seq[0];   count();
+                var rechts = 0;       count();
+
+                for(i = 2; i < seq.length; i++) {
+                    rechts += seq[i];      
+                    countTime();
+                }
+
+                for(i = 1; i < seq.length; i++) {
+                    if(links == rechts) {
+                        return i;
+                    }
+                    links += seq[i];       
+                    rechts -= seq[i+1];    
+                    countTime();
+                }
+                return -1;
+            }
+
+
+            // Testaufbau
+            var testArrayMittelpunkte = [];
+            for(var i = 0; i < 100; i ++) {
+                testArrayMittelpunkte.push((Math.random() * i) + 1);
+                mittelpunkte(testArrayMittelpunkte);
+                ad_4_2data.push({
+                    experiment : i,
+                    value : getCounterTime()
+                });
+
+                resetCounterTime();
+                mittelpunkteSpace(i,getCounter());
+                resetCounter();
+            }
+
+            function mittelpunkteSpace(i,space) {
+                ad_4_2_1data.push({
+                    experiment : i,
+                    value : space
+                });
+            }
+
+            // Tests
+            assert(mittelpunkte([1,2,3,5,3,2,1]) === 3, "[1,2,3,5,3,2,1] --> 3");
+            assert(mittelpunkte([-1,-2,-3,5,-3,-2,-1]) === 3, "[1,2,3,5,3,2,1] --> 3");
+            assert(mittelpunkte([]) === -1, "[] --> -1");
+            assert(mittelpunkte([1]) === -1, "[1] --> -1");
+            assert(mittelpunkte([1,2]) === -1, "[1,2] --> -1");
+            assert(mittelpunkte([1,3,5,9,4,2,3]) === 3, "[1,3,5,9,4,2,3] --> 3");
+            assert(mittelpunkte([1,2,3,5,5,2,1]) === -1, "[1,2,3,5,5,2,1] --> -1");
+            assert(mittelpunkte([-1,-2,-3,5,1,2,3]) === -1, "[-1,-2,-3,5,1,2,3] --> -1");
+            assert(mittelpunkte([-1,-2,-3,5,-6]) === 3, "[-1,-2,-3,5,-6] --> 3");
+            assert(mittelpunkte([1,1,1]) === 1, "[1,1,1] --> 1");
+            assert(mittelpunkte([0,0,0,0,0,0,0,0]) === 1, "[0,0,0,0,0,0,0,0] --> 1");
+            assert(mittelpunkte([1,2,3,5,3,2,1,2,3,3]) === 4, "[1,2,3,5,3,2,1,2,3,3] --> 4");
+
+        </script>
+        <!-- dieser Code zeigt die Implementierung und die Tests an -->
+        <script>
+            $('pre#ad-4-2-source').html($('#ad-4-2-code').html())
+        </script>
+		
+               <h3>Ergebnis: Laufzeit vom Algorithmus O(|S|)</h3>
+
+		       Die Laufzeit ist abhängig von der Größe des Arrays. <br>
+               Der Platzbetrag ist in O(1), da wir nur mit zwei Variablen arbeiten.<br><br>
+
+
+               <h3>Experiment: Zeitaufwand vom Algorithmus mittelpunkte(seq)</h3>
+
+
+        <div id="ad-4-2-experiments" style="height: 250px;"></div>
+        <script>
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'ad-4-2-experiments',
+                // do values relate to dates (time)?
+                parseTime: false,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: ad_4_2data,
+                // The name of the data record attribute that contains x-values.
+                xkey: 'experiment',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['value'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['Ben&ouml;tigte Zeit']
+            });
+        </script>
+
+
+        
+       
+       <!-- Aufgabe 4.3 -->
+        <h2>Aufgabe 4.3 (Längste Pfade ohne Richtungswechsel)</h2>
+        Gegeben sei ein binärer Baum T = (V, E) und die Funktionen r, l : V ? V ? {nil}, die zu<br>
+        einem Knoten das jeweils rechte oder linke Kind bestimmen (nil bedeutet, dass der Knoten<br>
+        kein rechtes bzw. linkes Kind hat). Zu berechnen ist die maximale Distanz zwischen den<br>
+        Knoten v0, vn für die gilt, dass sie auf einem Pfad von der Wurzel des Baums zu einem Blatt<br>
+        liegen und zusätzlich gilt<br><br>
+        ?i : 0 ? i < n • l(vi) in (v0, . . . , vn) oder ?i : 0 ? i < n • r(vi) in (v0, . . . , vn)<br><br>
+        Die Implementierung soll in O(V ) laufen und höchstens O(V ) zusätzlichen Speicherbedarf
+        haben.
+
+        <h3>Implementierung</h3>
+
+        <!-- In diesem Element wird der Inhalt des scripts mit der ID ad-1-2-code angezeigt -->
+        <pre id="ad-4-3-source"></pre>
+
+        <h3>Testergebnisse</h3>
+
+        <div id="ad-4-3-results"></div>
+        <!-- Code und Tests hier hin -->
+        <script id="ad-4-3-code" type="text/javascript">
+            var ad_4_3_1_data = [];
+            var ad_4_3_2_data = [];
+            var ad_4_3_3_data = [];
+            
+            var counter = 0;
+
+            function istNull(value){
+                return value === null;
+            }
+
+            function Node(){
+                this.value = null;
+                this.nodeLinks = null;
+                this.nodeRechts = null;
+
+
+                //Hinzufügen eines neuen Wertes. val ist der neue Wert,
+                this.add = function(value) {
+                    if (this.value == null){
+                        this.value = value;
+                    } else {
+                        if (value < this.value) {
+                            this.addLinks(value);
+                        } else {
+                            this.addRechts(value);
+                        }
+                    }
+                };
+
+
+                //Links hinzufügen
+                this.addLinks = function (value){
+                    if (istNull(this.nodeLinks)){
+                        var newValue = new Node();
+                        newValue.add(value);
+                        this.nodeLinks = newValue;
+                    } else {
+                        this.nodeLinks.add(value);
+                    }
+                };
+
+                //rechts hinzufügen
+                this.addRechts = function (value){
+                    if (istNull(this.nodeRechts)){
+                        var newValue = new Node();
+                        newValue.add(value);
+                        this.nodeRechts = newValue;
+                    } else {
+                        this.nodeRechts.add(value);
+                    }
+                };
+
+                this.searchLinks = function (zahl) {
+                    counter++;
+
+                    if (istNull(this.nodeLinks)){
+                        return zahl+1;
+                    }
+                    var c1 = this.nodeLinks.searchLinks(zahl+1);
+                    var c2 = 0;
+                    if (!istNull(this.nodeRechts)){
+                        c2 = this.nodeRechts.searchRechts(1);
+                    }
+
+                    if (c2 > c1) {
+                        return c2;
+                    }
+
+                    return c1;
+                };
+
+                this.searchRechts = function (zahl) {
+                    counter++;
+                    if (istNull(this.nodeRechts)){
+                        return zahl+1;
+                    }
+
+                    var c1 = this.nodeRechts.searchRechts(zahl+1);
+                    var c2 = 0;
+                    if (!istNull(this.nodeLinks)){
+                        c2 = this.nodeLinks.searchLinks(1);
+                    }
+
+                    if (c2 > c1){
+                        return c2;
+                    }
+
+                    return c1;
+
+
+                };
+
+                this.laengsterPfadOhneRichtungWechsel = function () {
+                    counter = 0;
+
+                    var c1 = 0;
+                    if (!istNull(this.nodeLinks)){
+                        c1 = this.nodeLinks.searchLinks(1);
+                    }
+                    var c2 = 0;
+                    if (!istNull(this.nodeRechts)) {
+                        c2 = this.nodeRechts.searchRechts(1);
+                    }
+                    if ( c1 < c2){
+                        return c2;
+                    }
+                    return c1;
+
+                }
+
+            }
+
+            //Testaufbau
+            var testNode = new Node();
+            
+            testNode.add(10);
+            testNode.add(15);
+            testNode.add(20);
+            testNode.add(8);
+            testNode.add(12);
+            testNode.add(13);
+            testNode.add(11);
+            testNode.add(4);
+            testNode.add(1);
+            testNode.add(3);
+            testNode.add(30);
+            testNode.add(25);
+            testNode.add(21);
+            testNode.add(27);
+            testNode.add(28);
+            testNode.add(26);
+            testNode.add(36);
+            
+            var baum1 = new Node();
+            for(i =0; i<100;i++){
+                var rnd = Math.random()*500;
+                baum1.add(rnd);
+                baum1.laengsterPfadOhneRichtungWechsel();
+
+                ad_4_3_1_data.push({ experiment: i, value : counter });
+            }
+            
+            var baum2 = new Node();
+            for(i =0; i<150;i++){
+                var rnd = Math.random()*500;
+                baum2.add(rnd);
+                baum2.laengsterPfadOhneRichtungWechsel();
+
+                ad_4_3_2_data.push({ experiment: i, value : counter });
+            }
+            
+            var baum3 = new Node();
+            for(i =0; i<200;i++){
+                var rnd = Math.random()*500;
+                baum3.add(rnd);
+                baum3.laengsterPfadOhneRichtungWechsel();
+
+                ad_4_3_3_data.push({ experiment: i, value : counter });
+            }
+            
+
+            // Tests
+            
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 5, "Test in einen Baum. Länge des Pfades: 5. Counter: " + counter);
+            testNode.add(50);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
+            testNode.add(44);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
+
+            testNode.add(14);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
+            testNode.add(14.1);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
+            testNode.add(14.2);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
+            testNode.add(14.3);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
+            testNode.add(14.4);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 7. Counter: " + counter);
+
+
+            testNode.add(-1);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 7. Counter: " + counter);
+            testNode.add(-2);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 7. Counter: " + counter);
+            testNode.add(-3);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 7. Counter: " + counter);
+            testNode.add(-4);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 8, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 8. Counter: " + counter);
+            
+            
+            //Experimenttest
+            assert(ad_4_3_1_data.length > 90, "Experiment \"Längste Pfade ohne Richtungswechsel()\" have collected data");
+        </script>
+        <!-- Dieser Code zeigt die Implementierung und die Tests an -->
+        <script>$('pre#ad-4-3-source').html($('#ad-4-3-code').html())</script>
+        <h3>Experiment Zugriffe auf die Struktur &nbsp; &nbsp; <i>X: Werte, auf die getestet wird &nbsp; &nbsp; Y: Anzahl der Zugriffe </i></h3>
+        <div id="ad-4-3-1-experiments" style="height: 250px;"></div>
+        
+        <script>
+            new Morris.Line({
+              // ID of the element in which to draw the chart.
+              element: 'ad-4-3-1-experiments',
+              // do values relate to dates (time)?
+              parseTime: false,
+              // Chart data records -- each entry in this array corresponds to a point on
+              // the chart.
+              data: ad_4_3_1_data,
+              // The name of the data record attribute that contains x-values.
+              xkey: 'experiment',
+              // A list of names of data record attributes that contain y-values.
+              ykeys: ['value'],
+              // Labels for the ykeys -- will be displayed when you hover over the
+              // chart.
+              labels: ['Value']
+            });
+        </script>
+
+        <br /><br />
+        <div id="ad-4-3-2-experiments" style="height: 250px;"></div>
+        
+        <script>
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'ad-4-3-2-experiments',
+                // do values relate to dates (time)?
+                parseTime: false,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: ad_4_3_2_data,
+                // The name of the data record attribute that contains x-values.
+                xkey: 'experiment',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['value'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['Value']
+            });
+        </script>
+        
+        <br /><br />
+        <div id="ad-4-3-3-experiments" style="height: 250px;"></div>
+        
+        <script>
+            new Morris.Line({
+                // ID of the element in which to draw the chart.
+                element: 'ad-4-3-3-experiments',
+                // do values relate to dates (time)?
+                parseTime: false,
+                // Chart data records -- each entry in this array corresponds to a point on
+                // the chart.
+                data: ad_4_3_3_data,
+                // The name of the data record attribute that contains x-values.
+                xkey: 'experiment',
+                // A list of names of data record attributes that contain y-values.
+                ykeys: ['value'],
+                // Labels for the ykeys -- will be displayed when you hover over the
+                // chart.
+                labels: ['Value']
+            });
+        </script>
+        
+        <br /><br /><br /> 
+        <hr />
+        <br /><br />
+
+
+
+                    
+         <!-- Aufgabe 4 -->
+        <h2>
+        Aufgabe 4.4 (Längste Pfade mit aufsteigendem Kantengewicht)
+        </h2>
+        		<ul>
+        			<li>Zu berechnen ist die Länge n des längsten Pfades (v0,...,vn) eines gerichteten Graphen G = (V,E) mit Gewichtsfunktion w : E -> R für den gilt, dass die Kantengewichte streng monoton zunehmen:</li>
+        			<li><br /><img alt="formel4" height="30px" src="formel4.png" width="379px" /></li>
+        			<li>Der Graph erlaubt Kanten der Form (v,v).</li>
+        			<li>Die Implementierung soll in O(V + E log(E)) laufen und höchstens O(V + E) zusätzlichen Speicherbedarf haben.</li>
+        		</ul>
+        <br />
+        <h3>
+        Implementierung
+        </h3>
+        <!-- In diesem Element wird der Inhalt des scripts mit der ID ad-4-4-code angezeigt -->
+        <pre id="ad-4-4-source"></pre>
+        <h3>
+        Testergebnisse
+        </h3>
+        <div id="ad-4-4-results"></div>
+        <!-- Code und Tests hier hin -->
+        <script id="ad-4-4-code">
+            // Code
+            var ad_4_4_data = [];
+        	var counter = 0;
+
+        	
+        	function Graph() {
+        		
+        		this.edges = [];
+        		this.vertieces = [];
+        		
+        		
+        		this.addEdge = function(edge) {	this.edges.push(edge); }
+        		
+        		this.addVertex = function(vertex) { this.vertieces.push(vertex); }
+        	
+        		this.getEdgesOf = function(vertex){
+        			var resultSet = [];
+        			for(var i=0; i < this.edges.length; i++){
+        				var edge = this.edges[i];
+        			
+        				if(edge.getSource().equals(vertex))
+        				{
+        					resultSet.push(this.edges[i]);
+        				}
+        			}
+        			return resultSet;
+        		}	
+        	}
+
+
+        	function MyVertex(value){	
+        		this.value = value;
+        		
+        		this.equals = function(otherVertex){
+        			if(this.value == otherVertex.value){
+        				return true;
+        			}
+        			return false;
+        		}
+        	} 
+
+
+        	function MyEdge(source,target,value) {			
+        		this.source = source;
+        		this.target = target;
+        		this.value = value;
+        		this.depth = 0;
+        		
+        		this.getSource = function() { return this.source; }
+
+        		this.getTarget = function() { return this.target; }
+
+        	}
+        		
+
+        	// ********************************** HILFSFUNKTIONEN *********************************************
+        	
+        	// Sortiert die Werte in einem Array aufsteigend -> [1,2,3,4,5,6,7,8,9,10]
+
+          var counter =0;
+
+          function mergeSort(arr) {
+        		if (arr.length < 2) return arr;
+        		
+        		var mittle = Math.floor(arr.length /2);
+        	  	counter+=1;
+
+        		var teilLinks = mergeSort(arr.slice(0,mittle));
+        	  	counter+=1;
+
+        		var teilRecht = mergeSort(arr.slice(mittle));
+        		
+        		return merge(teilLinks, teilRecht);
+        	}
+
+        	// Hilfsfunktion für MergeSort
+        	function merge(links,rechts) {
+        		var ergebnis = [];
+
+        		while (links.length >0 && rechts.length >0) {
+        			counter+=1;
+        			ergebnis.push(links[0].value < rechts[0].value ? links.shift() : rechts.shift());
+        		}
+
+        		counter += (links.length? links : rechts).length;
+        		return ergebnis.concat(links.length? links : rechts);
+        	}
+        	
+
+        	// Liefert einen random generierten Integer, der zwischen min (inklusiv) und max (exklusiv) liegt
+        	function getRandomInt(min, max) {
+        		return Math.floor(Math.random() * (max - min)) + min;
+        	}
+
+            // Liefert den längsten Pfad mit aufsteigendem Gewicht
+        	function longestPathWithStrongMonotonIncreasingWeight(graph) {
+        		counter =0;
+        		var longestPath = 0;	// Der längste gefundene Weg
+        		var lastSeenEdge = null;// Die zuletzt betrachtete Kante (Wir dürfen nur streng monoton steigend suchen)
+
+        		// 1.) alle Kanten von klein nach groß sortieren
+        		var edgesSorted = new Array().concat(graph.edges);
+
+        		// Den Startknoten suchen. Dieser hängt an der kleinsten Kante.
+
+        		//Länge zum Vergleichen erstellen
+        		var v1 = 0;
+
+        		//Solange unser sortiertes Edgearray nicht leer ist, soll er immer mit der kürzesten Edge beginnend nach einen kürzesten Pfad suchen.
+        		while (edgesSorted.length>0) {
+        			counter++;
+        		lastSeenEdge = edgesSorted[0];
+        			//aufrufen der suche nach den kürzesten Pfad
+        		var v2 = getDepth(graph, lastSeenEdge, 1, edgesSorted);
+        			//vergleich ob der gefundene längeste Pfad größer ist, als der bisherige längste Pfad.
+        		if (v1 < v2[0]) v1 = v2[0];
+        		}
+        		return v1;
+        		
+        	}
+        	
+        	function getDepth(graph, edge, depth, edgeList){
+        		counter++;
+
+        		//Target Knoten der Edge erhalten, um weitere Edges zu finden.
+        		var endVertex = edge.getTarget();
+        		//Initialisirung einer Variable zum bestimen des Abstandes zum Pfadende.
+        		var depthTillBeginning = 0;
+
+        		//Entfernen der Edge aus der EdgeListe
+        		var elemIndex = edgeList.indexOf(edge);
+        		if (elemIndex>-1) {
+        			edgeList.splice(elemIndex, 1);
+        		}
+
+        		//Sofern die Edge schonmal betrachtet worden ist, gibt sie ihren längsten Weg zu einen Pfadende zurück ohne die Schleife weiter zu durchlaufen.
+        		if (edge.depth > 0){
+        			return [depth + edge.depth-1,edge.depth+1];
+        		}
+
+        		//Erhalten aller Nachfolger des Targetknotens im Graphen.
+        		var edges = graph.getEdgesOf(endVertex);
+
+        		//Sichern der Variable depth, da diese im Schleifenaufruf geändert werden könnte!
+        		var thisDepth = depth;
+
+        		//Schleife über alle Nachfolger
+        		for(var i = 0 ; i < edges.length; i++){
+        			counter++;
+        				//Prüfung streng Monoton steigend!
+        				if (edge.value < edges[i].value) {
+
+
+        					//Ein gefundener Pfad wird weitergegangen
+        					var currDepth = getDepth(graph, edges[i], thisDepth + 1, edgeList);
+
+        					//Überprüfung, ob der gefundene Pfad tiefer ist, als der aktuelle.
+        					if (currDepth[0] > depth) {
+
+        						//Setzen der maximalen Tiefe des gefundenen Pfades
+        						depth = currDepth[0];
+
+        						//Setzen der entfernung zum Pfadende
+        						depthTillBeginning = currDepth[1]
+        					}
+        				}
+        		}
+
+        		//Sofern kein weiterer Pfad gefunden wordne ist, muss es sich um den akutellen tiefsten Pfad handeln, der aus der Schleife hervorgeht.
+        		//Sollte es sich um eine Endedge handeln (edge, an der es nicht weitergeht), wird die Tiefe bis zum Pfadende auf 1 gesetzt.
+        		if (depthTillBeginning == 0) depthTillBeginning = 1;
+        		//In der Edge wird dieser Wert gsichert.
+        		edge.depth = depthTillBeginning;
+        		//rückgabe der Tiefe und der entfernung zum Pfadende
+        		return [depth,depthTillBeginning+1];
+        	}
+        	
+        	 // ****************Tests***********************	
+        	 //graph1 erstellen
+        	   // Testgraph 1
+          // ---------------------------------------------------
+          var graphJan = new Graph();
+
+          var v0 = new MyVertex("0");
+          var v1 = new MyVertex("1");
+          var v2 = new MyVertex("2");
+          var v3 = new MyVertex("3");
+          var v4 = new MyVertex("4");
+          var v5 = new MyVertex("5");
+          var v6 = new MyVertex("6");
+          var v7 = new MyVertex("7");
+          var v8 = new MyVertex("8");
+
+          var e0 = new MyEdge(v0, v1, 0);
+          var e1 = new MyEdge(v1, v2, 1);
+          var e2 = new MyEdge(v2, v3, 2);
+          var e3 = new MyEdge(v3, v4, 3);
+          var e4 = new MyEdge(v6, v4, 2);
+          var e5 = new MyEdge(v2, v6, 4);
+          var e6 = new MyEdge(v7, v6, 1);
+          var e7 = new MyEdge(v6, v5, 6);
+          var e8 = new MyEdge(v5, v4, 13);
+          var e9 = new MyEdge(v8, v5, 11);
+          var e10 = new MyEdge(v0, v8, 10);
+          var e11 = new MyEdge(v0, v7, 0);
+          var e12 = new MyEdge(v8, v7, 2);
+
+          // Add Vertices
+          graphJan.addVertex(v0);
+          graphJan.addVertex(v1);
+          graphJan.addVertex(v2);
+          graphJan.addVertex(v3);
+          graphJan.addVertex(v4);
+          graphJan.addVertex(v5);
+          graphJan.addVertex(v6);
+          graphJan.addVertex(v7);
+          graphJan.addVertex(v8);
+
+          // Add Edges
+          graphJan.addEdge(e0);
+          graphJan.addEdge(e1);
+          graphJan.addEdge(e2);
+          graphJan.addEdge(e3);
+          graphJan.addEdge(e4);
+          graphJan.addEdge(e5);
+          graphJan.addEdge(e6);
+          graphJan.addEdge(e7);
+          graphJan.addEdge(e8);
+          graphJan.addEdge(e9);
+          graphJan.addEdge(e10);
+          graphJan.addEdge(e11);
+          graphJan.addEdge(e12);
+
+          // ------------------------------------------------------
+
+
+          // Test-Graph 2
+
+          // ------------------------------------------------------
+          var graph2Jan = new Graph();
+
+          var vert1 = new MyVertex("A");
+          var vert2 = new MyVertex("B");
+          var vert3 = new MyVertex("C");
+          var vert4 = new MyVertex("D");
+
+          var e1 = new MyEdge(vert1, vert2, 1);
+          var e2 = new MyEdge(vert2, vert3, 1);
+          var e3 = new MyEdge(vert3, vert4, 1);
+          var e4 = new MyEdge(vert4, vert1, 1);
+
+          graph2Jan.addVertex(vert1);
+          graph2Jan.addVertex(vert2);
+          graph2Jan.addVertex(vert3);
+          graph2Jan.addVertex(vert4);
+
+          graph2Jan.addEdge(e1);
+          graph2Jan.addEdge(e2);
+          graph2Jan.addEdge(e3);
+          graph2Jan.addEdge(e4);
+
+          // --------------------------------------------------------
+
+          // Testgraph 3
+          // -------------------------------------------------------
+
+          var graph3Jan = new Graph();
+
+          var vert1 = new MyVertex("A");
+          var vert2 = new MyVertex("B");
+          var vert3 = new MyVertex("C");
+
+          var e1 = new MyEdge(vert1, vert2, 0);
+          var e2 = new MyEdge(vert2, vert2, 1);
+          var e3 = new MyEdge(vert2, vert3, 2);
+
+          graph3Jan.addVertex(vert1);
+          graph3Jan.addVertex(vert2);
+          graph3Jan.addVertex(vert3);
+
+          graph3Jan.addEdge(e1);
+          graph3Jan.addEdge(e2);
+          graph3Jan.addEdge(e3);
+
+          // --------------------------------------------------------
+
+          // Testgraph 4
+          // ---------------------------------------------------------
+
+          var graph4Jan = new Graph();
+
+          var vert1 = new MyVertex("A");
+          var vert2 = new MyVertex("B");
+          var vert3 = new MyVertex("C");
+          var vert4 = new MyVertex("D");
+          var vert5 = new MyVertex("E");
+          var vert6 = new MyVertex("F");
+
+          graph4Jan.addVertex(vert1);
+          graph4Jan.addVertex(vert2);
+          graph4Jan.addVertex(vert3);
+          graph4Jan.addVertex(vert4);
+          graph4Jan.addVertex(vert5);
+          graph4Jan.addVertex(vert6);
+
+          var edge1 = new MyEdge(vert1, vert2, 1);
+          var edge2 = new MyEdge(vert2, vert3, 2);
+          var edge3 = new MyEdge(vert3, vert4, 0);
+          var edge4 = new MyEdge(vert5, vert6, 5);
+
+          graph4Jan.addEdge(edge1);
+          graph4Jan.addEdge(edge2);
+          graph4Jan.addEdge(edge3);
+          graph4Jan.addEdge(edge4);
+
+
+          // --------------------------------------------------------
+         
+        	 var graf_henning = new Graph();
+        		
+        		//Knoten erstellen
+        		var vertex0 = new MyVertex('V0');
+        		var vertex1 = new MyVertex('V1');
+        		var vertex2 = new MyVertex('V2');
+        		var vertex3 = new MyVertex('V3');
+        		var vertex4 = new MyVertex('V4');
+        		var vertex5 = new MyVertex('V5');
+        		var vertex6 = new MyVertex('V6');
+        		var vertex7 = new MyVertex('V7');
+        		var vertex8 = new MyVertex('V8');
+        		var vertex9 = new MyVertex('V9');
+        		var vertex10 = new MyVertex('V10');
+        		var vertex11 = new MyVertex('V11');
+        		var vertex12 = new MyVertex('V12');
+        		var vertex13 = new MyVertex('V13');
+        		var vertex14 = new MyVertex('V14');
+        		
+        		graf_henning.addVertex(vertex0);
+        		graf_henning.addVertex(vertex1);
+        		graf_henning.addVertex(vertex2);
+        		graf_henning.addVertex(vertex3);
+        		graf_henning.addVertex(vertex4);
+        		graf_henning.addVertex(vertex5);
+        		graf_henning.addVertex(vertex6);
+        		graf_henning.addVertex(vertex7);
+        		graf_henning.addVertex(vertex8);
+        		graf_henning.addVertex(vertex9);
+        		graf_henning.addVertex(vertex10);
+        		graf_henning.addVertex(vertex11);
+        		graf_henning.addVertex(vertex12);
+        		graf_henning.addVertex(vertex13);
+        		graf_henning.addVertex(vertex14);
+        		
+        		graf_henning.addEdge(new MyEdge(vertex1,vertex4,1));
+        		graf_henning.addEdge(new MyEdge(vertex9,vertex8,30));
+        		graf_henning.addEdge(new MyEdge(vertex7,vertex5,60));
+        		graf_henning.addEdge(new MyEdge(vertex4,vertex11,100));
+        		graf_henning.addEdge(new MyEdge(vertex11,vertex9,2));
+        		graf_henning.addEdge(new MyEdge(vertex1,vertex3,2));
+        		graf_henning.addEdge(new MyEdge(vertex2,vertex0,2));
+        		graf_henning.addEdge(new MyEdge(vertex13,vertex12,5));
+        		graf_henning.addEdge(new MyEdge(vertex13,vertex8,1));
+        		graf_henning.addEdge(new MyEdge(vertex3,vertex1,5));
+        		graf_henning.addEdge(new MyEdge(vertex4,vertex7,5));
+        		graf_henning.addEdge(new MyEdge(vertex5,vertex4,10));
+        		graf_henning.addEdge(new MyEdge(vertex11,vertex4,10));
+        		graf_henning.addEdge(new MyEdge(vertex12,vertex8,7));
+        		graf_henning.addEdge(new MyEdge(vertex2,vertex1,8));
+        		graf_henning.addEdge(new MyEdge(vertex10,vertex2,8));
+        		graf_henning.addEdge(new MyEdge(vertex6,vertex5,9));
+        		graf_henning.addEdge(new MyEdge(vertex12,vertex6,10));
+        		graf_henning.addEdge(new MyEdge(vertex6,vertex10,11));
+        		graf_henning.addEdge(new MyEdge(vertex3,vertex5,13));
+        		graf_henning.addEdge(new MyEdge(vertex3,vertex6,16));
+        		graf_henning.addEdge(new MyEdge(vertex13,vertex11,17));
+        		graf_henning.addEdge(new MyEdge(vertex2,vertex3,19));
+        		graf_henning.addEdge(new MyEdge(vertex10,vertex6,19));
+        		graf_henning.addEdge(new MyEdge(vertex9,vertex4,20));
+        		graf_henning.addEdge(new MyEdge(vertex1,vertex0,3));
+        		graf_henning.addEdge(new MyEdge(vertex7,vertex12,3));
+        		graf_henning.addEdge(new MyEdge(vertex11,vertex0,4));
+        		graf_henning.addEdge(new MyEdge(vertex9,vertex13,4));
+        		graf_henning.addEdge(new MyEdge(vertex3,vertex10,20));
+        		graf_henning.addEdge(new MyEdge(vertex14,vertex14,200));
+
+        		
+        		
+        	 var  graph = new Graph();
+        	 var ver1 = new MyVertex("A");
+        	 var ver2 = new MyVertex("B");
+        	 var ver3 = new MyVertex("C");
+        	 var ver4 = new MyVertex("D");
+        	 
+        	 graph.addVertex(ver1);
+        	 graph.addVertex(ver2);
+        	 graph.addVertex(ver3);
+        	 graph.addVertex(ver4);
+        	 
+        	 graph.addEdge(new MyEdge(ver1,ver2,1));
+        	 graph.addEdge(new MyEdge(ver2,ver3,1));
+        	 graph.addEdge(new MyEdge(ver3,ver4,1));
+        	 graph.addEdge(new MyEdge(ver4,ver1,1));
+        	 
+        	 assert(1 == longestPathWithStrongMonotonIncreasingWeight(graph), "1 == longestPathWithStrongMonotonIncreasingWeight(graph)") ;
+        	 assert(6 == longestPathWithStrongMonotonIncreasingWeight(graf_henning), "6 == longestPathWithStrongMonotonIncreasingWeight(graf_henning)") ;
+        	  assert(longestPathWithStrongMonotonIncreasingWeight(graphJan)==5,"longestPathWithStrongMonotonIncreasingWeight(graphJan)==5");
+        	  assert(longestPathWithStrongMonotonIncreasingWeight(graph2Jan)==1,"longestPathWithStrongMonotonIncreasingWeight(graph2Jan)==1");
+        	  assert(longestPathWithStrongMonotonIncreasingWeight(graph2Jan)==1,"ongestPathWithStrongMonotonIncreasingWeight(graph2Jan)==1");
+        	  assert(longestPathWithStrongMonotonIncreasingWeight(graph3Jan)==3,"longestPathWithStrongMonotonIncreasingWeight(graph3Jan)==3");
+        	  assert(longestPathWithStrongMonotonIncreasingWeight(graph4Jan)==2,"longestPathWithStrongMonotonIncreasingWeight(graph4Jan)==2");
+
+        	 
+        	 
+        	
+        	
+        	 // ********* Random Graphen Erstellen ****************
+        	 
+        	 // 20 Knoten, mit 30 Kanten
+        	 var anzahlKnoten = 20;
+        	 var anzahlKanten = 30;
+        	 
+        	 var graph = new Graph(); // Der Graph
+        	 
+        	 for(var i=0;i<anzahlKnoten;i++){ // Die Knoten
+        		var vertex1 = new MyVertex(i+1);
+        		graph.addVertex(vertex1);
+        	 }
+
+          	var graph2 = new Graph();
+
+          {
+        	  var vert1 = new MyVertex("A");
+        	  var vert2 = new MyVertex("B");
+        	  var vert3 = new MyVertex("C");
+        	  var vert4 = new MyVertex("D");
+        	  var vert5 = new MyVertex("E");
+        	  var vert6 = new MyVertex("F");
+        	  var vert7 = new MyVertex("Q");
+        	  graph2.addVertex(vert1);
+        	  graph2.addVertex(vert2);
+        	  graph2.addVertex(vert3);
+        	  graph2.addVertex(vert4);
+        	  graph2.addVertex(vert5);
+        	  graph2.addVertex(vert6);
+        	  graph2.addVertex(vert7);
+
+        	  graph2.addEdge(new MyEdge(vert1,vert2,10));
+        	  graph2.addEdge(new MyEdge(vert3,vert1,9));
+        	  graph2.addEdge(new MyEdge(vert6,vert1,9));
+        	  graph2.addEdge(new MyEdge(vert5,vert6,8));
+        	  graph2.addEdge(new MyEdge(vert4,vert5,7));
+        	  graph2.addEdge(new MyEdge(vert4,vert7,5));
+        	  graph2.addEdge(new MyEdge(vert3,vert4,4));
+        	  graph2.addEdge(new MyEdge(vert1,vert3,5));
+        	  graph2.addEdge(new MyEdge(vert4,vert6,6));
+        	  graph2.addEdge(new MyEdge(vert6,vert3,3));
+        	  graph2.addEdge(new MyEdge(vert5,vert1,4));
+
+          }
+
+        	 
+        	 for(var i = 0; i < anzahlKanten;i++){ // Die Kanten
+        		var randomVertex1 = getRandomInt(0,graph.vertieces.length);
+        		var randomVertex2 = getRandomInt(0,graph.vertieces.length);
+        		graph.addEdge(new MyEdge(graph.vertieces[randomVertex1],graph.vertieces[randomVertex2],i+1));		
+        	 }
+        	 
+        	 
+        	 console.log("Anzahl Knoten im Graph: " + graph.vertieces.length);
+        	 console.log("Anzahl Kanten im Graph: " + graph.edges.length);
+        	 console.log("Alle Knoten: " + graph.vertieces);
+        	 
+        	 console.log("Kanten: " + graph.edges);
+        	 console.log("Kanten sortiert: " + mergeSort(graph.edges));
+
+        	 console.log("Ein Knoten: " + graph.vertieces[0]);
+        	 console.log("Eine Kante: " + graph.edges[0]);
+        	 graph.getEdgesOf(graph.vertieces[0]);
+        	 console.log("Iwas " + longestPathWithStrongMonotonIncreasingWeight(graph2)+ " Countaaaa: " + counter);
+        	 console.log("Iwas " + longestPathWithStrongMonotonIncreasingWeight(graph)+ " Countaaaa: " + counter);
+        	 //console.log("Kanten von Vertex(1): " + graph.getEdgesOf(graph.vertieces[0]));	 
+
+        	 
+        	 
+        	//assert(9 === graph.dSearch(), "9 == graph.dSearch()"); 
+        	//assert(null != graph.dSearch(), "null != graph.dSearch()");  
+        	  
+        	 //******************Experimente************************
+
+          {
+        	var graph3 = new Graph();
+
+        		var anzahl = 200;
+
+        	  for ( i = 0 ; i < anzahl ; i++ ){
+        		  var vertex1 = new MyVertex(i+1);
+        		  graph3.addVertex(vertex1);
+        	  }
+
+        	  var randomVertex1 = getRandomInt(0, graph3.vertieces.length);
+        	  var randomVertex2 = getRandomInt(0, graph3.vertieces.length);
+        	  graph3.addEdge(new MyEdge(graph3.vertieces[randomVertex1], graph3.vertieces[randomVertex2], i + 1));
+
+        	  for ( i = 0; i < anzahl*3 ; i++) {
+        		  var randomVertex1 = getRandomInt(0, graph3.vertieces.length);
+        		  var randomVertex2 = getRandomInt(0, graph3.vertieces.length);
+        		  graph3.addEdge(new MyEdge(graph3.vertieces[randomVertex1], graph3.vertieces[randomVertex2], i + 1));
+        		  longestPathWithStrongMonotonIncreasingWeight(graph3);
+        		  ad_4_4_data.push({
+        			  experiment : graph3.edges.length,
+        			  value : counter
+        		  });
+        	  }
+          }
+
+        	
+        	
+
+          // Tests
+
+        </script>
+        <!-- dieser Code zeigt die Implementierung und die Tests an -->
+        <script>
+        $('pre#ad-4-4-source').html($('#ad-4-4-code').html())
+        </script><br />
+        <h3>
+        	Ergebnis: Die Laufzeit beträgt O(E) und hat einen Speicherbedarf von O(V+E).
+        </h3>
+
+        <h2>"BeispielGraph" == graf_Henning</h2>
+        <img alt="Beispielgraph" height="600px" src="adp44.jpg" width="1000px" />
+        <br />
+
+        <h3>
+        Experimente
+        </h3>
+
+        <div id="ad-4-4-experiments" style="height: 250px;"></div>
+        <script>
+        new Morris.Line({
+          // ID of the element in which to draw the chart.
+          element: 'ad-4-4-experiments',
+          // do values relate to dates (time)?
+          parseTime: false,
+          // Chart data records -- each entry in this array corresponds to a point on
+          // the chart.
+          data: ad_4_4_data,
+          // The name of the data record attribute that contains x-values.
+          xkey: 'experiment',
+          // A list of names of data record attributes that contain y-values.
+          ykeys: ['value'],
+          // Labels for the ykeys -- will be displayed when you hover over the
+          // chart.
+          labels: ['Value']
+        });
+        </script>
+     
+    </body>
+</html>
