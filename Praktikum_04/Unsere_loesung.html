@@ -63,7 +63,7 @@
         P + Q = K
         </p>
         <p>
-        Beispiel: Bei der Eingabe sumPairs([1,5,3,7,2,2],4) existieren 4 Paare => (1,3),(3,1),(2,2),(2,2)
+        Beispiel: Bei der Eingabe sumPairs([1,4,3,7,2,2],5) existieren 4 Paare => (1,4),(4,1),(3,2),(2,3)
         </p>
         <h3>
         Implementierung
@@ -476,24 +476,46 @@
             //Testaufbau
             var testNode = new Node();
             
-            testNode.add(10);
-            testNode.add(15);
-            testNode.add(20);
-            testNode.add(8);
-            testNode.add(12);
-            testNode.add(13);
-            testNode.add(11);
-            testNode.add(4);
-            testNode.add(1);
-            testNode.add(3);
+            testNode.add(50);
             testNode.add(30);
-            testNode.add(25);
-            testNode.add(21);
-            testNode.add(27);
-            testNode.add(28);
-            testNode.add(26);
-            testNode.add(36);
+            testNode.add(60);
+            testNode.add(55);
+            testNode.add(31);
+            testNode.add(10);
+            testNode.add(1);
+            testNode.add(11);
+            testNode.add(32);
+            testNode.add(33);
+            testNode.add(34);
             
+
+            // Tests
+            
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 5, "Test in einen Baum. Länge des Pfades: 5.");
+            testNode.add(38);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Element 38 hinzugefügt. Längeste Pfad: 6.");
+            testNode.add(56);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Element 56 hinzugefügt. Längeste Pfad: 6.");
+            testNode.add(14);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Element 14 hinzugefügt. Längeste Pfad: 6.");
+            testNode.add(39);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Element 39 hinzugefügt. Längeste Pfad: 7.");
+            testNode.add(62);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Element 62 hinzugefügt. Längeste Pfad: 7.");
+            testNode.add(70);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Element 70 hinzugefügt. Längeste Pfad: 7.");
+            testNode.add(72);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Element 72 hinzugefügt. Längeste Pfad: 7.");
+            testNode.add(80);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Element 80 hinzugefügt. Längeste Pfad: 7.");
+            testNode.add(94);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Element 94 hinzugefügt. Längeste Pfad: 7.");
+            testNode.add(100);
+            assert(testNode.laengsterPfadOhneRichtungWechsel() == 8, "Element 100 hinzugefügt. Längeste Pfad: 8.");
+
+            
+
+            //Experimenttest
             var baum1 = new Node();
             for(i =0; i<100;i++){
                 var rnd = Math.random()*500;
@@ -520,43 +542,15 @@
 
                 ad_4_3_3_data.push({ experiment: i, value : counter });
             }
-            
 
-            // Tests
-            
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 5, "Test in einen Baum. Länge des Pfades: 5. Counter: " + counter);
-            testNode.add(50);
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
-            testNode.add(44);
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
-
-            testNode.add(14);
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
-            testNode.add(14.1);
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
-            testNode.add(14.2);
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
-            testNode.add(14.3);
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 6, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 6. Counter: " + counter);
-            testNode.add(14.4);
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 7. Counter: " + counter);
-
-
-            testNode.add(-1);
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 7. Counter: " + counter);
-            testNode.add(-2);
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 7. Counter: " + counter);
-            testNode.add(-3);
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 7, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 7. Counter: " + counter);
-            testNode.add(-4);
-            assert(testNode.laengsterPfadOhneRichtungWechsel() == 8, "Test in einen Baum. Element hinzugefügt. Länge des Pfades: 8. Counter: " + counter);
-            
-            
-            //Experimenttest
-            assert(ad_4_3_1_data.length > 90, "Experiment \"Längste Pfade ohne Richtungswechsel()\" have collected data");
         </script>
+
         <!-- Dieser Code zeigt die Implementierung und die Tests an -->
         <script>$('pre#ad-4-3-source').html($('#ad-4-3-code').html())</script>
+
+        <h3>Beispielgraph 4.3</h3>
+        <img alt="Beispielgraph_4_3" src="Beispielgraph_4_3.png" height="600px" src="adp44.jpg" />
+
         <h3>Experiment Zugriffe auf die Struktur &nbsp; &nbsp; <i>X: Werte, auf die getestet wird &nbsp; &nbsp; Y: Anzahl der Zugriffe </i></h3>
         <div id="ad-4-3-1-experiments" style="height: 250px;"></div>
         
@@ -634,13 +628,11 @@
         <h2>
         Aufgabe 4.4 (Längste Pfade mit aufsteigendem Kantengewicht)
         </h2>
-        		<ul>
-        			<li>Zu berechnen ist die Länge n des längsten Pfades (v0,...,vn) eines gerichteten Graphen G = (V,E) mit Gewichtsfunktion w : E -> R für den gilt, dass die Kantengewichte streng monoton zunehmen:</li>
-        			<li><br /><img alt="formel4" height="30px" src="formel4.png" width="379px" /></li>
-        			<li>Der Graph erlaubt Kanten der Form (v,v).</li>
-        			<li>Die Implementierung soll in O(V + E log(E)) laufen und höchstens O(V + E) zusätzlichen Speicherbedarf haben.</li>
-        		</ul>
-        <br />
+        	Zu berechnen ist die Länge n des längsten Pfades (v0,...,vn) eines gerichteten Graphen G = (V,E) mit Gewichtsfunktion w : E -> R für den gilt, dass die Kantengewichte streng monoton zunehmen:<br>
+        	<img alt="formel4" height="30px" src="formel4.png" width="379px" /><br>
+        	Der Graph erlaubt Kanten der Form (v,v).<br>
+        	Die Implementierung soll in O(V + E log(E)) laufen und höchstens O(V + E) zusätzlichen Speicherbedarf haben.<br>
+       
         <h3>
         Implementierung
         </h3>
@@ -660,116 +652,90 @@
         	function Graph() {
         		
         		this.edges = [];
-        		this.vertieces = [];
+        		this.vertices = [];
         		
-        		
-        		this.addEdge = function(edge) {	this.edges.push(edge); }
-        		
-        		this.addVertex = function(vertex) { this.vertieces.push(vertex); }
+        		this.addEdge = function(edge)     {	this.edges.push(edge); }
+        		this.addVertex = function(vertex) { this.vertices.push(vertex); }
         	
-        		this.getEdgesOf = function(vertex){
-        			var resultSet = [];
+        		this.getOutgoingEdges = function(vertex){
+        			var edgeSet = [];
         			for(var i=0; i < this.edges.length; i++){
-        				var edge = this.edges[i];
+        				
+                        var anEdge = this.edges[i];
         			
-        				if(edge.getSource().equals(vertex))
+        				if(anEdge.isSourceVertex(vertex))
         				{
-        					resultSet.push(this.edges[i]);
+        					edgeSet.push(anEdge);
         				}
         			}
-        			return resultSet;
+        			return edgeSet;
         		}	
         	}
 
 
-        	function MyVertex(value){	
+        	function OwnVertex(value){	
         		this.value = value;
         		
+                this.getValue = function(){ return this.value;}
         		this.equals = function(otherVertex){
-        			if(this.value == otherVertex.value){
-        				return true;
-        			}
-        			return false;
+        			return this.value == otherVertex.value;
         		}
         	} 
 
 
-        	function MyEdge(source,target,value) {			
+        	function OwnEdge(source,target,value) {			
         		this.source = source;
         		this.target = target;
         		this.value = value;
         		this.depth = 0;
         		
         		this.getSource = function() { return this.source; }
-
         		this.getTarget = function() { return this.target; }
 
+                this.isSourceVertex = function(vertex){ return this.source.equals(vertex);}
+                this.isTargetVertex = function(vertex){ return this.target.equals(vertex);}
+
+                this.getValue = function(){ return this.value;}
         	}
         		
 
-        	// ********************************** HILFSFUNKTIONEN *********************************************
+        	// HILFSFUNKTIONEN *********************************************
         	
-        	// Sortiert die Werte in einem Array aufsteigend -> [1,2,3,4,5,6,7,8,9,10]
+            var counter =0;
 
-          var counter =0;
-
-          function mergeSort(arr) {
-        		if (arr.length < 2) return arr;
-        		
-        		var mittle = Math.floor(arr.length /2);
-        	  	counter+=1;
-
-        		var teilLinks = mergeSort(arr.slice(0,mittle));
-        	  	counter+=1;
-
-        		var teilRecht = mergeSort(arr.slice(mittle));
-        		
-        		return merge(teilLinks, teilRecht);
-        	}
-
-        	// Hilfsfunktion für MergeSort
-        	function merge(links,rechts) {
-        		var ergebnis = [];
-
-        		while (links.length >0 && rechts.length >0) {
-        			counter+=1;
-        			ergebnis.push(links[0].value < rechts[0].value ? links.shift() : rechts.shift());
-        		}
-
-        		counter += (links.length? links : rechts).length;
-        		return ergebnis.concat(links.length? links : rechts);
-        	}
-        	
-
-        	// Liefert einen random generierten Integer, der zwischen min (inklusiv) und max (exklusiv) liegt
         	function getRandomInt(min, max) {
         		return Math.floor(Math.random() * (max - min)) + min;
         	}
 
+            // Datentyp Pair
+            function Pair(key,value){
+                this.key = key;
+                this.value = value;
+            }
+
             // Liefert den längsten Pfad mit aufsteigendem Gewicht
         	function longestPathWithStrongMonotonIncreasingWeight(graph) {
         		counter =0;
-        		var longestPath = 0;	// Der längste gefundene Weg
         		var lastSeenEdge = null;// Die zuletzt betrachtete Kante (Wir dürfen nur streng monoton steigend suchen)
 
         		// 1.) alle Kanten von klein nach groß sortieren
-        		var edgesSorted = new Array().concat(graph.edges);
+        		var copyOfEdges = new Array().concat(graph.edges);
 
         		// Den Startknoten suchen. Dieser hängt an der kleinsten Kante.
 
         		//Länge zum Vergleichen erstellen
-        		var v1 = 0;
+        		var longestPath = 0;
 
         		//Solange unser sortiertes Edgearray nicht leer ist, soll er immer mit der kürzesten Edge beginnend nach einen kürzesten Pfad suchen.
-        		while (edgesSorted.length>0) {
+        		while (copyOfEdges.length>0) {
         			counter++;
-        		lastSeenEdge = edgesSorted[0];
+        		lastSeenEdge = copyOfEdges[0];
         			//aufrufen der suche nach den kürzesten Pfad
-        		var v2 = getDepth(graph, lastSeenEdge, 1, edgesSorted);
+        		var pathPair = getDepth(graph, lastSeenEdge, 1, copyOfEdges);
         			//vergleich ob der gefundene längeste Pfad größer ist, als der bisherige längste Pfad.
-        		if (v1 < v2[0]) v1 = v2[0];
+        		if (longestPath < pathPair.key) longestPath = pathPair.key;
         		}
-        		return v1;
+        		return longestPath;
         		
         	}
         	
@@ -777,7 +743,7 @@
         		counter++;
 
         		//Target Knoten der Edge erhalten, um weitere Edges zu finden.
-        		var endVertex = edge.getTarget();
+        		var targetVertexOfEdge = edge.getTarget();
         		//Initialisirung einer Variable zum bestimen des Abstandes zum Pfadende.
         		var depthTillBeginning = 0;
 
@@ -789,11 +755,11 @@
 
         		//Sofern die Edge schonmal betrachtet worden ist, gibt sie ihren längsten Weg zu einen Pfadende zurück ohne die Schleife weiter zu durchlaufen.
         		if (edge.depth > 0){
-        			return [depth + edge.depth-1,edge.depth+1];
+        			return new Pair(depth + edge.depth-1 , edge.depth+1);
         		}
 
         		//Erhalten aller Nachfolger des Targetknotens im Graphen.
-        		var edges = graph.getEdgesOf(endVertex);
+        		var edges = graph.getOutgoingEdges(endVertex);
 
         		//Sichern der Variable depth, da diese im Schleifenaufruf geändert werden könnte!
         		var thisDepth = depth;
@@ -802,20 +768,21 @@
         		for(var i = 0 ; i < edges.length; i++){
         			counter++;
         				//Prüfung streng Monoton steigend!
-        				if (edge.value < edges[i].value) {
+                        var currentEdge = edges[i];
+        				if (edge.getValue() < currentEdge.getValue()) {
 
 
         					//Ein gefundener Pfad wird weitergegangen
-        					var currDepth = getDepth(graph, edges[i], thisDepth + 1, edgeList);
+        					var currentDepthPair = getDepth(graph, currentEdge, thisDepth + 1, edgeList);
 
         					//Überprüfung, ob der gefundene Pfad tiefer ist, als der aktuelle.
-        					if (currDepth[0] > depth) {
+        					if (currentDepthPair.key > depth) {
 
         						//Setzen der maximalen Tiefe des gefundenen Pfades
-        						depth = currDepth[0];
+        						depth = currentDepthPair.key;
 
         						//Setzen der entfernung zum Pfadende
-        						depthTillBeginning = currDepth[1]
+        						depthTillBeginning = currentDepthPair.value;
         					}
         				}
         		}
@@ -826,64 +793,64 @@
         		//In der Edge wird dieser Wert gsichert.
         		edge.depth = depthTillBeginning;
         		//rückgabe der Tiefe und der entfernung zum Pfadende
-        		return [depth,depthTillBeginning+1];
+        		return new Pair(depth,depthTillBeginning+1);
         	}
         	
-        	 // ****************Tests***********************	
+        	 // Tests***********************	
         	 //graph1 erstellen
-        	   // Testgraph 1
+        	 // Testgraph 1
           // ---------------------------------------------------
-          var graphJan = new Graph();
+          var graph_1 = new Graph();
 
-          var v0 = new MyVertex("0");
-          var v1 = new MyVertex("1");
-          var v2 = new MyVertex("2");
-          var v3 = new MyVertex("3");
-          var v4 = new MyVertex("4");
-          var v5 = new MyVertex("5");
-          var v6 = new MyVertex("6");
-          var v7 = new MyVertex("7");
-          var v8 = new MyVertex("8");
+          var v0 = new OwnVertex("0");
+          var v1 = new OwnVertex("1");
+          var v2 = new OwnVertex("2");
+          var v3 = new OwnVertex("3");
+          var v4 = new OwnVertex("4");
+          var v5 = new OwnVertex("5");
+          var v6 = new OwnVertex("6");
+          var v7 = new OwnVertex("7");
+          var v8 = new OwnVertex("8");
 
-          var e0 = new MyEdge(v0, v1, 0);
-          var e1 = new MyEdge(v1, v2, 1);
-          var e2 = new MyEdge(v2, v3, 2);
-          var e3 = new MyEdge(v3, v4, 3);
-          var e4 = new MyEdge(v6, v4, 2);
-          var e5 = new MyEdge(v2, v6, 4);
-          var e6 = new MyEdge(v7, v6, 1);
-          var e7 = new MyEdge(v6, v5, 6);
-          var e8 = new MyEdge(v5, v4, 13);
-          var e9 = new MyEdge(v8, v5, 11);
-          var e10 = new MyEdge(v0, v8, 10);
-          var e11 = new MyEdge(v0, v7, 0);
-          var e12 = new MyEdge(v8, v7, 2);
+          var e0 = new OwnEdge(v0, v1, 0);
+          var e1 = new OwnEdge(v1, v2, 1);
+          var e2 = new OwnEdge(v2, v3, 2);
+          var e3 = new OwnEdge(v3, v4, 3);
+          var e4 = new OwnEdge(v6, v4, 2);
+          var e5 = new OwnEdge(v2, v6, 4);
+          var e6 = new OwnEdge(v7, v6, 1);
+          var e7 = new OwnEdge(v6, v5, 6);
+          var e8 = new OwnEdge(v5, v4, 13);
+          var e9 = new OwnEdge(v8, v5, 11);
+          var e10 = new OwnEdge(v0, v8, 10);
+          var e11 = new OwnEdge(v0, v7, 0);
+          var e12 = new OwnEdge(v8, v7, 2);
 
           // Add Vertices
-          graphJan.addVertex(v0);
-          graphJan.addVertex(v1);
-          graphJan.addVertex(v2);
-          graphJan.addVertex(v3);
-          graphJan.addVertex(v4);
-          graphJan.addVertex(v5);
-          graphJan.addVertex(v6);
-          graphJan.addVertex(v7);
-          graphJan.addVertex(v8);
+          graph_1.addVertex(v0);
+          graph_1.addVertex(v1);
+          graph_1.addVertex(v2);
+          graph_1.addVertex(v3);
+          graph_1.addVertex(v4);
+          graph_1.addVertex(v5);
+          graph_1.addVertex(v6);
+          graph_1.addVertex(v7);
+          graph_1.addVertex(v8);
 
           // Add Edges
-          graphJan.addEdge(e0);
-          graphJan.addEdge(e1);
-          graphJan.addEdge(e2);
-          graphJan.addEdge(e3);
-          graphJan.addEdge(e4);
-          graphJan.addEdge(e5);
-          graphJan.addEdge(e6);
-          graphJan.addEdge(e7);
-          graphJan.addEdge(e8);
-          graphJan.addEdge(e9);
-          graphJan.addEdge(e10);
-          graphJan.addEdge(e11);
-          graphJan.addEdge(e12);
+          graph_1.addEdge(e0);
+          graph_1.addEdge(e1);
+          graph_1.addEdge(e2);
+          graph_1.addEdge(e3);
+          graph_1.addEdge(e4);
+          graph_1.addEdge(e5);
+          graph_1.addEdge(e6);
+          graph_1.addEdge(e7);
+          graph_1.addEdge(e8);
+          graph_1.addEdge(e9);
+          graph_1.addEdge(e10);
+          graph_1.addEdge(e11);
+          graph_1.addEdge(e12);
 
           // ------------------------------------------------------
 
@@ -891,286 +858,210 @@
           // Test-Graph 2
 
           // ------------------------------------------------------
-          var graph2Jan = new Graph();
+          var graph_2 = new Graph();
 
-          var vert1 = new MyVertex("A");
-          var vert2 = new MyVertex("B");
-          var vert3 = new MyVertex("C");
-          var vert4 = new MyVertex("D");
+          var vert1 = new OwnVertex("A");
+          var vert2 = new OwnVertex("B");
+          var vert3 = new OwnVertex("C");
+          var vert4 = new OwnVertex("D");
 
-          var e1 = new MyEdge(vert1, vert2, 1);
-          var e2 = new MyEdge(vert2, vert3, 1);
-          var e3 = new MyEdge(vert3, vert4, 1);
-          var e4 = new MyEdge(vert4, vert1, 1);
+          var e1 = new OwnEdge(vert1, vert2, 1);
+          var e2 = new OwnEdge(vert2, vert3, 1);
+          var e3 = new OwnEdge(vert3, vert4, 1);
+          var e4 = new OwnEdge(vert4, vert1, 1);
 
-          graph2Jan.addVertex(vert1);
-          graph2Jan.addVertex(vert2);
-          graph2Jan.addVertex(vert3);
-          graph2Jan.addVertex(vert4);
+          graph_2.addVertex(vert1);
+          graph_2.addVertex(vert2);
+          graph_2.addVertex(vert3);
+          graph_2.addVertex(vert4);
 
-          graph2Jan.addEdge(e1);
-          graph2Jan.addEdge(e2);
-          graph2Jan.addEdge(e3);
-          graph2Jan.addEdge(e4);
+          graph_2.addEdge(e1);
+          graph_2.addEdge(e2);
+          graph_2.addEdge(e3);
+          graph_2.addEdge(e4);
 
           // --------------------------------------------------------
 
           // Testgraph 3
           // -------------------------------------------------------
 
-          var graph3Jan = new Graph();
+          var graph_3 = new Graph();
 
-          var vert1 = new MyVertex("A");
-          var vert2 = new MyVertex("B");
-          var vert3 = new MyVertex("C");
+          var vert1 = new OwnVertex("A");
+          var vert2 = new OwnVertex("B");
+          var vert3 = new OwnVertex("C");
 
-          var e1 = new MyEdge(vert1, vert2, 0);
-          var e2 = new MyEdge(vert2, vert2, 1);
-          var e3 = new MyEdge(vert2, vert3, 2);
+          var e1 = new OwnEdge(vert1, vert2, 0);
+          var e2 = new OwnEdge(vert2, vert2, 1);
+          var e3 = new OwnEdge(vert2, vert3, 2);
 
-          graph3Jan.addVertex(vert1);
-          graph3Jan.addVertex(vert2);
-          graph3Jan.addVertex(vert3);
+          graph_3.addVertex(vert1);
+          graph_3.addVertex(vert2);
+          graph_3.addVertex(vert3);
 
-          graph3Jan.addEdge(e1);
-          graph3Jan.addEdge(e2);
-          graph3Jan.addEdge(e3);
+          graph_3.addEdge(e1);
+          graph_3.addEdge(e2);
+          graph_3.addEdge(e3);
 
           // --------------------------------------------------------
 
           // Testgraph 4
           // ---------------------------------------------------------
 
-          var graph4Jan = new Graph();
+          var graph_4 = new Graph();
 
-          var vert1 = new MyVertex("A");
-          var vert2 = new MyVertex("B");
-          var vert3 = new MyVertex("C");
-          var vert4 = new MyVertex("D");
-          var vert5 = new MyVertex("E");
-          var vert6 = new MyVertex("F");
+          var vert1 = new OwnVertex("A");
+          var vert2 = new OwnVertex("B");
+          var vert3 = new OwnVertex("C");
+          var vert4 = new OwnVertex("D");
+          var vert5 = new OwnVertex("E");
+          var vert6 = new OwnVertex("F");
 
-          graph4Jan.addVertex(vert1);
-          graph4Jan.addVertex(vert2);
-          graph4Jan.addVertex(vert3);
-          graph4Jan.addVertex(vert4);
-          graph4Jan.addVertex(vert5);
-          graph4Jan.addVertex(vert6);
+          graph_4.addVertex(vert1);
+          graph_4.addVertex(vert2);
+          graph_4.addVertex(vert3);
+          graph_4.addVertex(vert4);
+          graph_4.addVertex(vert5);
+          graph_4.addVertex(vert6);
 
-          var edge1 = new MyEdge(vert1, vert2, 1);
-          var edge2 = new MyEdge(vert2, vert3, 2);
-          var edge3 = new MyEdge(vert3, vert4, 0);
-          var edge4 = new MyEdge(vert5, vert6, 5);
+          var edge1 = new OwnEdge(vert1, vert2, 1);
+          var edge2 = new OwnEdge(vert2, vert3, 2);
+          var edge3 = new OwnEdge(vert3, vert4, 0);
+          var edge4 = new OwnEdge(vert5, vert6, 5);
 
-          graph4Jan.addEdge(edge1);
-          graph4Jan.addEdge(edge2);
-          graph4Jan.addEdge(edge3);
-          graph4Jan.addEdge(edge4);
+          graph_4.addEdge(edge1);
+          graph_4.addEdge(edge2);
+          graph_4.addEdge(edge3);
+          graph_4.addEdge(edge4);
 
 
           // --------------------------------------------------------
+          // Testgraph 5
+          // ---------------------------------------------------------
+
          
-        	 var graf_henning = new Graph();
+           var graph_5 = new Graph();
         		
-        		//Knoten erstellen
-        		var vertex0 = new MyVertex('V0');
-        		var vertex1 = new MyVertex('V1');
-        		var vertex2 = new MyVertex('V2');
-        		var vertex3 = new MyVertex('V3');
-        		var vertex4 = new MyVertex('V4');
-        		var vertex5 = new MyVertex('V5');
-        		var vertex6 = new MyVertex('V6');
-        		var vertex7 = new MyVertex('V7');
-        		var vertex8 = new MyVertex('V8');
-        		var vertex9 = new MyVertex('V9');
-        		var vertex10 = new MyVertex('V10');
-        		var vertex11 = new MyVertex('V11');
-        		var vertex12 = new MyVertex('V12');
-        		var vertex13 = new MyVertex('V13');
-        		var vertex14 = new MyVertex('V14');
+    		//Knoten erstellen
+    	   var vertex0 = new OwnVertex('V0');
+    	   var vertex1 = new OwnVertex('V1');
+    	   var vertex2 = new OwnVertex('V2');
+    	   var vertex3 = new OwnVertex('V3');
+    	   var vertex4 = new OwnVertex('V4');
+    	   var vertex5 = new OwnVertex('V5');
+    	   var vertex6 = new OwnVertex('V6');
+    	   var vertex7 = new OwnVertex('V7');
+    	   var vertex8 = new OwnVertex('V8');
+    	   var vertex9 = new OwnVertex('V9');
+    	   var vertex10 = new OwnVertex('V10');
+    	   var vertex11 = new OwnVertex('V11');
+    	   var vertex12 = new OwnVertex('V12');
+    	   var vertex13 = new OwnVertex('V13');
+    	   var vertex14 = new OwnVertex('V14');
         		
-        		graf_henning.addVertex(vertex0);
-        		graf_henning.addVertex(vertex1);
-        		graf_henning.addVertex(vertex2);
-        		graf_henning.addVertex(vertex3);
-        		graf_henning.addVertex(vertex4);
-        		graf_henning.addVertex(vertex5);
-        		graf_henning.addVertex(vertex6);
-        		graf_henning.addVertex(vertex7);
-        		graf_henning.addVertex(vertex8);
-        		graf_henning.addVertex(vertex9);
-        		graf_henning.addVertex(vertex10);
-        		graf_henning.addVertex(vertex11);
-        		graf_henning.addVertex(vertex12);
-        		graf_henning.addVertex(vertex13);
-        		graf_henning.addVertex(vertex14);
-        		
-        		graf_henning.addEdge(new MyEdge(vertex1,vertex4,1));
-        		graf_henning.addEdge(new MyEdge(vertex9,vertex8,30));
-        		graf_henning.addEdge(new MyEdge(vertex7,vertex5,60));
-        		graf_henning.addEdge(new MyEdge(vertex4,vertex11,100));
-        		graf_henning.addEdge(new MyEdge(vertex11,vertex9,2));
-        		graf_henning.addEdge(new MyEdge(vertex1,vertex3,2));
-        		graf_henning.addEdge(new MyEdge(vertex2,vertex0,2));
-        		graf_henning.addEdge(new MyEdge(vertex13,vertex12,5));
-        		graf_henning.addEdge(new MyEdge(vertex13,vertex8,1));
-        		graf_henning.addEdge(new MyEdge(vertex3,vertex1,5));
-        		graf_henning.addEdge(new MyEdge(vertex4,vertex7,5));
-        		graf_henning.addEdge(new MyEdge(vertex5,vertex4,10));
-        		graf_henning.addEdge(new MyEdge(vertex11,vertex4,10));
-        		graf_henning.addEdge(new MyEdge(vertex12,vertex8,7));
-        		graf_henning.addEdge(new MyEdge(vertex2,vertex1,8));
-        		graf_henning.addEdge(new MyEdge(vertex10,vertex2,8));
-        		graf_henning.addEdge(new MyEdge(vertex6,vertex5,9));
-        		graf_henning.addEdge(new MyEdge(vertex12,vertex6,10));
-        		graf_henning.addEdge(new MyEdge(vertex6,vertex10,11));
-        		graf_henning.addEdge(new MyEdge(vertex3,vertex5,13));
-        		graf_henning.addEdge(new MyEdge(vertex3,vertex6,16));
-        		graf_henning.addEdge(new MyEdge(vertex13,vertex11,17));
-        		graf_henning.addEdge(new MyEdge(vertex2,vertex3,19));
-        		graf_henning.addEdge(new MyEdge(vertex10,vertex6,19));
-        		graf_henning.addEdge(new MyEdge(vertex9,vertex4,20));
-        		graf_henning.addEdge(new MyEdge(vertex1,vertex0,3));
-        		graf_henning.addEdge(new MyEdge(vertex7,vertex12,3));
-        		graf_henning.addEdge(new MyEdge(vertex11,vertex0,4));
-        		graf_henning.addEdge(new MyEdge(vertex9,vertex13,4));
-        		graf_henning.addEdge(new MyEdge(vertex3,vertex10,20));
-        		graf_henning.addEdge(new MyEdge(vertex14,vertex14,200));
+            graph_5.addVertex(vertex0);
+            graph_5.addVertex(vertex1);
+            graph_5.addVertex(vertex2);
+            graph_5.addVertex(vertex3);
+            graph_5.addVertex(vertex4);
+            graph_5.addVertex(vertex5);
+            graph_5.addVertex(vertex6);
+            graph_5.addVertex(vertex7);
+            graph_5.addVertex(vertex8);
+            graph_5.addVertex(vertex9);
+            graph_5.addVertex(vertex10);
+            graph_5.addVertex(vertex11);
+            graph_5.addVertex(vertex12);
+            graph_5.addVertex(vertex13);
+            graph_5.addVertex(vertex14);
+            
+            graph_5.addEdge(new OwnEdge(vertex1,vertex4,1));
+            graph_5.addEdge(new OwnEdge(vertex9,vertex8,30));
+            graph_5.addEdge(new OwnEdge(vertex7,vertex5,60));
+            graph_5.addEdge(new OwnEdge(vertex4,vertex11,100));
+            graph_5.addEdge(new OwnEdge(vertex11,vertex9,2));
+            graph_5.addEdge(new OwnEdge(vertex1,vertex3,2));
+            graph_5.addEdge(new OwnEdge(vertex2,vertex0,2));
+            graph_5.addEdge(new OwnEdge(vertex13,vertex12,5));
+            graph_5.addEdge(new OwnEdge(vertex13,vertex8,1));
+            graph_5.addEdge(new OwnEdge(vertex3,vertex1,5));
+            graph_5.addEdge(new OwnEdge(vertex4,vertex7,5));
+            graph_5.addEdge(new OwnEdge(vertex5,vertex4,10));
+            graph_5.addEdge(new OwnEdge(vertex11,vertex4,10));
+            graph_5.addEdge(new OwnEdge(vertex12,vertex8,7));
+            graph_5.addEdge(new OwnEdge(vertex2,vertex1,8));
+            graph_5.addEdge(new OwnEdge(vertex10,vertex2,8));
+            graph_5.addEdge(new OwnEdge(vertex6,vertex5,9));
+            graph_5.addEdge(new OwnEdge(vertex12,vertex6,10));
+            graph_5.addEdge(new OwnEdge(vertex6,vertex10,11));
+            graph_5.addEdge(new OwnEdge(vertex3,vertex5,13));
+            graph_5.addEdge(new OwnEdge(vertex3,vertex6,16));
+            graph_5.addEdge(new OwnEdge(vertex13,vertex11,17));
+            graph_5.addEdge(new OwnEdge(vertex2,vertex3,19));
+            graph_5.addEdge(new OwnEdge(vertex10,vertex6,19));
+            graph_5.addEdge(new OwnEdge(vertex9,vertex4,20));
+            graph_5.addEdge(new OwnEdge(vertex1,vertex0,3));
+            graph_5.addEdge(new OwnEdge(vertex7,vertex12,3));
+            graph_5.addEdge(new OwnEdge(vertex11,vertex0,4));
+            graph_5.addEdge(new OwnEdge(vertex9,vertex13,4));
+            graph_5.addEdge(new OwnEdge(vertex3,vertex10,20));
+            graph_5.addEdge(new OwnEdge(vertex14,vertex14,200));
 
         		
-        		
-        	 var  graph = new Graph();
-        	 var ver1 = new MyVertex("A");
-        	 var ver2 = new MyVertex("B");
-        	 var ver3 = new MyVertex("C");
-        	 var ver4 = new MyVertex("D");
-        	 
-        	 graph.addVertex(ver1);
-        	 graph.addVertex(ver2);
-        	 graph.addVertex(ver3);
-        	 graph.addVertex(ver4);
-        	 
-        	 graph.addEdge(new MyEdge(ver1,ver2,1));
-        	 graph.addEdge(new MyEdge(ver2,ver3,1));
-        	 graph.addEdge(new MyEdge(ver3,ver4,1));
-        	 graph.addEdge(new MyEdge(ver4,ver1,1));
-        	 
-        	 assert(1 == longestPathWithStrongMonotonIncreasingWeight(graph), "1 == longestPathWithStrongMonotonIncreasingWeight(graph)") ;
-        	 assert(6 == longestPathWithStrongMonotonIncreasingWeight(graf_henning), "6 == longestPathWithStrongMonotonIncreasingWeight(graf_henning)") ;
-        	  assert(longestPathWithStrongMonotonIncreasingWeight(graphJan)==5,"longestPathWithStrongMonotonIncreasingWeight(graphJan)==5");
-        	  assert(longestPathWithStrongMonotonIncreasingWeight(graph2Jan)==1,"longestPathWithStrongMonotonIncreasingWeight(graph2Jan)==1");
-        	  assert(longestPathWithStrongMonotonIncreasingWeight(graph2Jan)==1,"ongestPathWithStrongMonotonIncreasingWeight(graph2Jan)==1");
-        	  assert(longestPathWithStrongMonotonIncreasingWeight(graph3Jan)==3,"longestPathWithStrongMonotonIncreasingWeight(graph3Jan)==3");
-        	  assert(longestPathWithStrongMonotonIncreasingWeight(graph4Jan)==2,"longestPathWithStrongMonotonIncreasingWeight(graph4Jan)==2");
-
+        	// Testgraph 6
+            // ---------------------------------------------------------
+	
+        	var  graph_6 = new Graph();
+        	var ver1 = new OwnVertex("A");
+        	var ver2 = new OwnVertex("B");
+        	var ver3 = new OwnVertex("C");
+        	var ver4 = new OwnVertex("D");
+        	
+        	graph_6.addVertex(ver1);
+        	graph_6.addVertex(ver2);
+        	graph_6.addVertex(ver3);
+        	graph_6.addVertex(ver4);
+        	
+        	graph_6.addEdge(new OwnEdge(ver1,ver2,1));
+        	graph_6.addEdge(new OwnEdge(ver2,ver3,1));
+        	graph_6.addEdge(new OwnEdge(ver3,ver4,1));
+        	graph_6.addEdge(new OwnEdge(ver4,ver1,1));
+        	
+        	
+        	assert(longestPathWithStrongMonotonIncreasingWeight(graph_1) == 5,"longestPathWithStrongMonotonIncreasingWeight(graph_1) == 5");
+        	assert(longestPathWithStrongMonotonIncreasingWeight(graph_2) == 1,"longestPathWithStrongMonotonIncreasingWeight(graph_2) == 1");
+            assert(longestPathWithStrongMonotonIncreasingWeight(graph_3) == 3,"longestPathWithStrongMonotonIncreasingWeight(graph_3) == 3");
+            assert(longestPathWithStrongMonotonIncreasingWeight(graph_4) == 2,"longestPathWithStrongMonotonIncreasingWeight(graph_4) == 2");
+            assert(longestPathWithStrongMonotonIncreasingWeight(graph_5) == 6,"longestPathWithStrongMonotonIncreasingWeight(graph_5) == 6");
+            assert(longestPathWithStrongMonotonIncreasingWeight(graph_6) == 1,"longestPathWithStrongMonotonIncreasingWeight(graph_6) == 1");
         	 
         	 
         	
-        	
-        	 // ********* Random Graphen Erstellen ****************
-        	 
-        	 // 20 Knoten, mit 30 Kanten
-        	 var anzahlKnoten = 20;
-        	 var anzahlKanten = 30;
-        	 
-        	 var graph = new Graph(); // Der Graph
-        	 
-        	 for(var i=0;i<anzahlKnoten;i++){ // Die Knoten
-        		var vertex1 = new MyVertex(i+1);
-        		graph.addVertex(vertex1);
-        	 }
-
-          	var graph2 = new Graph();
-
-          {
-        	  var vert1 = new MyVertex("A");
-        	  var vert2 = new MyVertex("B");
-        	  var vert3 = new MyVertex("C");
-        	  var vert4 = new MyVertex("D");
-        	  var vert5 = new MyVertex("E");
-        	  var vert6 = new MyVertex("F");
-        	  var vert7 = new MyVertex("Q");
-        	  graph2.addVertex(vert1);
-        	  graph2.addVertex(vert2);
-        	  graph2.addVertex(vert3);
-        	  graph2.addVertex(vert4);
-        	  graph2.addVertex(vert5);
-        	  graph2.addVertex(vert6);
-        	  graph2.addVertex(vert7);
-
-        	  graph2.addEdge(new MyEdge(vert1,vert2,10));
-        	  graph2.addEdge(new MyEdge(vert3,vert1,9));
-        	  graph2.addEdge(new MyEdge(vert6,vert1,9));
-        	  graph2.addEdge(new MyEdge(vert5,vert6,8));
-        	  graph2.addEdge(new MyEdge(vert4,vert5,7));
-        	  graph2.addEdge(new MyEdge(vert4,vert7,5));
-        	  graph2.addEdge(new MyEdge(vert3,vert4,4));
-        	  graph2.addEdge(new MyEdge(vert1,vert3,5));
-        	  graph2.addEdge(new MyEdge(vert4,vert6,6));
-        	  graph2.addEdge(new MyEdge(vert6,vert3,3));
-        	  graph2.addEdge(new MyEdge(vert5,vert1,4));
-
-          }
-
-        	 
-        	 for(var i = 0; i < anzahlKanten;i++){ // Die Kanten
-        		var randomVertex1 = getRandomInt(0,graph.vertieces.length);
-        		var randomVertex2 = getRandomInt(0,graph.vertieces.length);
-        		graph.addEdge(new MyEdge(graph.vertieces[randomVertex1],graph.vertieces[randomVertex2],i+1));		
-        	 }
-        	 
-        	 
-        	 console.log("Anzahl Knoten im Graph: " + graph.vertieces.length);
-        	 console.log("Anzahl Kanten im Graph: " + graph.edges.length);
-        	 console.log("Alle Knoten: " + graph.vertieces);
-        	 
-        	 console.log("Kanten: " + graph.edges);
-        	 console.log("Kanten sortiert: " + mergeSort(graph.edges));
-
-        	 console.log("Ein Knoten: " + graph.vertieces[0]);
-        	 console.log("Eine Kante: " + graph.edges[0]);
-        	 graph.getEdgesOf(graph.vertieces[0]);
-        	 console.log("Iwas " + longestPathWithStrongMonotonIncreasingWeight(graph2)+ " Countaaaa: " + counter);
-        	 console.log("Iwas " + longestPathWithStrongMonotonIncreasingWeight(graph)+ " Countaaaa: " + counter);
-        	 //console.log("Kanten von Vertex(1): " + graph.getEdgesOf(graph.vertieces[0]));	 
-
-        	 
-        	 
-        	//assert(9 === graph.dSearch(), "9 == graph.dSearch()"); 
-        	//assert(null != graph.dSearch(), "null != graph.dSearch()");  
-        	  
-        	 //******************Experimente************************
-
-          {
-        	var graph3 = new Graph();
+        	 //Experimente************************
+        	var graphExperiment = new Graph();
 
         		var anzahl = 200;
 
         	  for ( i = 0 ; i < anzahl ; i++ ){
-        		  var vertex1 = new MyVertex(i+1);
-        		  graph3.addVertex(vertex1);
+        		  var vertex1 = new OwnVertex(i+1);
+        		  graphExperiment.addVertex(vertex1);
         	  }
 
-        	  var randomVertex1 = getRandomInt(0, graph3.vertieces.length);
-        	  var randomVertex2 = getRandomInt(0, graph3.vertieces.length);
-        	  graph3.addEdge(new MyEdge(graph3.vertieces[randomVertex1], graph3.vertieces[randomVertex2], i + 1));
+        	  var randomVertex1 = getRandomInt(0, graphExperiment.vertices.length);
+        	  var randomVertex2 = getRandomInt(0, graphExperiment.vertices.length);
+        	  graphExperiment.addEdge(new OwnEdge(graphExperiment.vertices[randomVertex1], graphExperiment.vertices[randomVertex2], i + 1));
 
         	  for ( i = 0; i < anzahl*3 ; i++) {
-        		  var randomVertex1 = getRandomInt(0, graph3.vertieces.length);
-        		  var randomVertex2 = getRandomInt(0, graph3.vertieces.length);
-        		  graph3.addEdge(new MyEdge(graph3.vertieces[randomVertex1], graph3.vertieces[randomVertex2], i + 1));
-        		  longestPathWithStrongMonotonIncreasingWeight(graph3);
+        		  var randomVertex1 = getRandomInt(0, graphExperiment.vertices.length);
+        		  var randomVertex2 = getRandomInt(0, graphExperiment.vertices.length);
+        		  graphExperiment.addEdge(new OwnEdge(graphExperiment.vertices[randomVertex1], graphExperiment.vertices[randomVertex2], i + 1));
+        		  longestPathWithStrongMonotonIncreasingWeight(graphExperiment);
         		  ad_4_4_data.push({
-        			  experiment : graph3.edges.length,
+        			  experiment : graphExperiment.edges.length,
         			  value : counter
         		  });
         	  }
-          }
 
-        	
-        	
-
-          // Tests
 
         </script>
         <!-- dieser Code zeigt die Implementierung und die Tests an -->
@@ -1181,7 +1072,7 @@
         	Ergebnis: Die Laufzeit beträgt O(E) und hat einen Speicherbedarf von O(V+E).
         </h3>
 
-        <h2>"BeispielGraph" == graf_Henning</h2>
+        <h2>"BeispielGraph" == graph_5</h2>
         <img alt="Beispielgraph" height="600px" src="adp44.jpg" width="1000px" />
         <br />
 
